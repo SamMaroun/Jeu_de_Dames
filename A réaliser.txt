@@ -1,0 +1,45 @@
+Une matrice 10x10
+20 pions blancs, 20 pions noirs
+
+Placement sur le plateau
+Déplacement possible
+manger un pion = continuer à en manger d'autres si possible
+	-> autant en avant qu'en arrière
+Menu
+Dame (pions différent)
+Fin de partie -> manuel = abandon (un des joueur quitte la partie en cours)
+	      -> si l'un des joueurs n'a plus de pions
+              
+
+1er méthode:
+	- Une classe plateau
+		-> matrice 10x10 de pion
+			°Constructeur qui place les pions en début de partie
+			°victoire
+			°défaite
+			°déplacement -> déplacement classique, les prises et si pions = dames, 
+					fonction recursive (ou attribut isPossible pour voir si c'est possible de se déplacer)
+			*Mettre en surbrillance les déplacements possible et les pions également
+
+			
+
+	- Une classe pion
+		-> couleur ça détermine le sens du déplacement
+		-> dames ? ca change ton déplacement possible
+		-> vivant ou mort ?
+			°si mort, n'est plus visible sur le plateau 
+			°si vivant, visible
+
+2ème méthode:
+
+
+Règle du jeu:
+- Les pions sont placer sur le plateau au départ, les pions de la couleur blanc commence.
+- Chaque pion peut se déplacer une unique fois en diagonale vers l'avant
+- Si un pion a un pion adversaire à une case de lui en diagonale ET que l'espace situé à deux cases de ce pion est vide alors il peut effectuer une prise
+Il peut de plus continuer sa prise si les conditions sont à nouveau favorable. La prise peut s'effectuer en avant comme en arrière
+- Lorsque un pion atteint la partie extrême du plateau, il se transforme en dame. 
+Les dames peuvent se déplacer en avant comme en arrière sur l'ensemble du plateau en diagonale. 
+La prise est similaire au pion classique seulement la dame peut s'arreter sur la case vide de son choix après le pion.
+- Le jeu s'arrête si l'un dès joueur n'a plus de pions OU par forfait
+
