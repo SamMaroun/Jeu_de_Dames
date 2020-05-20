@@ -16,10 +16,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Jeu_de_Dames-Class_Pion/class_pion.cpp \
+    Pion.cpp \
+    Plateau.cpp \
+    class_pion.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    Pion.h \
+    Plateau.h \
+    class_pion.h \
     mainwindow.h
 
 FORMS += \
