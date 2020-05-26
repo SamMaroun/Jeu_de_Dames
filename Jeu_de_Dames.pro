@@ -18,14 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Pion.cpp \
     Plateau.cpp \
-    class_pion.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Pion.h \
     Plateau.h \
-    class_pion.h \
     mainwindow.h
 
 FORMS += \
@@ -35,3 +33,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc

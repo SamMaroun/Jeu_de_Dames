@@ -89,7 +89,3 @@ int Plateau::victoire(){
 
 }
 
-bool Plateau::defaite(){
-
-}
-
