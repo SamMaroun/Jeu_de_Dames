@@ -17,9 +17,11 @@ class Plateau{
         //Déplacement : prend la position du pion
         void deplacementPion(int pos_x, int pos_y);
 
-        //Test la victoire et la défaite pour l'arrêt du jeu
-        bool victoire(); //valeur par défaut false, true si victoire
-        bool defaite(); //valeur par défaut false, true si défaite
+        //Test la fin de jeu
+        //valeur par défaut 0, si personne n'a encore gagné
+        //1 si les blancs gagnent, 2 si les noirs gagnent
+        int victoire();
+
 
 
     private:
