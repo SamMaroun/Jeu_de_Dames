@@ -9,19 +9,19 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    //w.placerPionBlanc();
+    w.placerPionBlanc();
     w.initialisationPlateau();
-    //QMouseEvent *e = nullptr;
+    /*QMouseEvent *e;
 
-    //do{
-        //w.mousePressEvent(e);
+    do{
+     w.mousePressEvent(e);
 
-       // std::cout << w.getPressX() << std::endl;
-      //  std::cout << w.getPressY() << std::endl;
-    //}while(e != nullptr);
+       std::cout << w.getPressX() << std::endl;
+       std::cout << w.getPressY() << std::endl;
+    }while(e != nullptr);
 
 
-    //delete e;
-
+    delete e;
+*/
     return a.exec();
 }

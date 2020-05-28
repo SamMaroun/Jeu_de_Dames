@@ -14,8 +14,8 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     QPointF pt = ui->graphicsView->mapToScene(e->pos());
 
     //qu'on adapte au position pressX et pressY
-    pressX = pt.x()-30;
-    pressY = pt.y()-100;
+    pressX = pt.x();
+    pressY = pt.y();
 
     //On émet le signal pour que le slot soit déclencher
     emit mousePressed();
@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //On connecte le SLOT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //On doit le connecter mousseEvent
     //avec la méthode de déplacement de la classe Plateau (POSSIBLE ?)
+    QObject::connect(this,SIGNAL(mousePressed()), SLOT(placerPionBlanc()));
 
     //On initialise la scène
     scene = new QGraphicsScene(this);
@@ -78,10 +79,6 @@ int MainWindow::getPressY(){
     return pressY;
 }
 
-void MainWindow::placerPionBlanc(){
-   scene->addEllipse(51,25,15,15,*whitePen,*whiteBrush);
-}
-
 void MainWindow::initialisationPlateau(){
 
     //Placement des Pions Noir
@@ -113,4 +110,16 @@ void MainWindow::initialisationPlateau(){
             scene->addEllipse(52*i_x+25,25*i_y+204,15,15,*whitePen,*whiteBrush);
         }
     }
+
 }
+
+//test qui marche
+void MainWindow::placerPionBlanc(){
+        scene->addEllipse(pressX,pressY,15,15,*whitePen,*whiteBrush);
+}
+
+
+//Recupérer les coordonnés d'un pion en cliquant dessus
+//puis cliquer sur une case autorisé pour le déplacer
+//puis le rendre invisible à sa position de départ et visible à l'arrivé
+//tout ça en prenant en compte le fait que d'autres pions sont sur le plateau

@@ -28,15 +28,15 @@ public:
     int getPressX();
     int getPressY();
 
-    //Placer un pion blanc
-    void placerPionBlanc();
-
     //Initialisation début de partie
     void initialisationPlateau();
+
+
 
 public slots:
     //void on_actionQuitter_triggerd();
     void mousePressEvent(QMouseEvent *e);
+    void placerPionBlanc();
 
 signals:
     void mousePressed();
