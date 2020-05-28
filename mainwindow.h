@@ -28,6 +28,12 @@ public:
     int getPressX();
     int getPressY();
 
+    //Placer un pion blanc
+    void placerPionBlanc();
+
+    //Initialisation début de partie
+    void initialisationPlateau();
+
 public slots:
     //void on_actionQuitter_triggerd();
     void mousePressEvent(QMouseEvent *e);
@@ -39,6 +45,17 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene; //Scène pour placer les objets
     QGraphicsPixmapItem *fond; //Image de fond = damier
+
+    //Dessiner les pions Blancs
+    QGraphicsEllipseItem *pionBlanc; //pion
+    QBrush *whiteBrush; //Brosse Blanche
+    QPen *whitePen; //Crayon Blanc
+
+    //Dessiner les pions Noirs
+    QGraphicsEllipseItem *pionNoir;
+    QBrush *blackBrush;
+    QPen *blackPen;
+
     int pressX;
     int pressY;
 };

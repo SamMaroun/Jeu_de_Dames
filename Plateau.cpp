@@ -6,7 +6,7 @@
 
 #include "Plateau.h"
 
-Plateau::Plateau(){
+/*Plateau::Plateau(){
 
     //Placement des noirs impaire
     //Tous les pions sont mort par défaut, on les passe à vivant
@@ -50,7 +50,10 @@ Plateau::Plateau(){
            }
        }
 
-}
+} */
+
+
+
 
 void Plateau::deplacementPion(int pos_x, int pos_y){
     //Dans le cas des noirs, on se déplace vers le base
