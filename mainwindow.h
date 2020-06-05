@@ -9,6 +9,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 
@@ -27,16 +28,20 @@ public:
     //getters et setters
     int getPressX();
     int getPressY();
+    std::vector<QGraphicsItem*> getAllItem();
 
     //Initialisation début de partie
     void initialisationPlateau();
+
+    //Afficher le plateau a chaque tour
+    void afficherPlateau();
 
 
 
 public slots:
     //void on_actionQuitter_triggerd();
-    void mousePressEvent(QMouseEvent *e);
-    void placerPionBlanc();
+    void mousePressEvent(QMouseEvent *actuel);
+    // TEST:void placerPionBlanc();
 
 signals:
     void mousePressed();
