@@ -6,27 +6,26 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "Plateau.h"
 #include <iostream>
 
 void MainWindow::mousePressEvent(QMouseEvent *actuel)
 {
-    //On prend la position
-    QPointF pt = ui->graphicsView->mapToScene(actuel->pos());
+    //On prend la position du premier clique
+    if(pressXinitial == 0 && pressYinitial == 0){
+       pressXinitial = actuel->globalX();
+       pressYinitial = actuel->globalY();
+    }
 
-    //qu'on adapte au position pressX et pressY
-    pressX = pt.x();
-    pressY = pt.y();
+    else if(pressXinitial != 0 && pressYinitial != 0){
+        pressXsecond = actuel->globalX();
+        pressYsecond = actuel->globalY();
 
-    //pressX=5+25*(pressX/25); //position exact du pion en X
+    }
 
-    //pressY=5+25*(pressY/25); //position exact du pion en Y
-
-    //On émet le signal pour que le slot soit déclencher
-<<<<<<< HEAD
-
-   // emit mousePressed();
-
+    if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
+        emit mousePressed();
+    }
+}
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -35,10 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //On connecte le SLOT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //On doit le connecter mousseEvent
-    //avec la méthode de déplacement de la classe Plateau (POSSIBLE ?)
-    QObject::connect(this,SIGNAL(mousePressed()), SLOT(placerPionBlanc()));
+    //on connecte le slot avec l'affichage du plateau
+    QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
 
     //On initialise la scène
     scene = new QGraphicsScene(this);
@@ -62,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     whitePen->setWidth(3); //largeur du pinceau
     whiteBrush->setStyle(Qt::SolidPattern);//type de brosse
 
-    //Initialisation des pions blancs
+    //Initialisation des pions noir
     blackBrush = new QBrush();
     blackPen = new QPen();
 
@@ -72,8 +69,10 @@ MainWindow::MainWindow(QWidget *parent) :
     blackPen->setWidth(3); //largeur du pinceau
     blackBrush->setStyle(Qt::SolidPattern);//type de brosse
 
-
-
+    //Initialisation dames
+    redPen = new QPen();
+    redPen->setColor(Qt::red);
+    redPen->setWidth(3); //largeur du pinceau
 }
 
 MainWindow::~MainWindow()
@@ -81,41 +80,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::getPressX(){
-    return pressX;
-}
-
-int MainWindow::getPressY(){
-    return pressY;
-}
-
-/*
-std::vector<QGraphicsItem*> MainWindow::getAllItem(){
-
-    //On récupère l'ensemble des items comme variable
-    QList<QGraphicsItem *> items = scene->items();
-    std::vector<QGraphicsItem*> pions;
-
-    foreach( QGraphicsItem *item, items )
-
-    {
-
-    pions.push_back (item);
-
-    int count = 0;
-    for(unsigned int i = 0; i<pions.size();i++)
-        count++;
-    //Je les stocke dans un tableau et les affiche
-    std::cout << count << std::endl;
-    }
-
-    pions.erase(pions.begin());
-    return pions;
-}
-*/
 
 void MainWindow::initialisationPlateau(){
-
     //Placement des Pions Noir
     //Impaire
     for(int i_y=1; i_y<4; i_y+=2){
@@ -147,20 +113,53 @@ void MainWindow::initialisationPlateau(){
     }
 
 }
-/*
+
 void MainWindow::afficherPlateau(){
     for(int i_y=0; i_y<10; i_y++){
         for(int i_x=0; i_x<10; i_x++){
-            scene->addEllipse();
+
+            //on place les pions blancs
+            if(jeu.getDamier(i_x,i_y) == 1){
+                scene->addEllipse(25*i_x,25*i_y,15,15,*whitePen,*whiteBrush);
+            }
+
+            //on place les pions noirs
+            else if(jeu.getDamier(i_x,i_y) == -1){
+                scene->addEllipse(25*i_x,25*i_y,15,15,*blackPen,*blackBrush);
+            }
+
+            //on place les dames blanches
+            if(jeu.getDamier(i_x,i_y) == 2){
+                scene->addEllipse(25*i_x,25*i_y,15,15,*redPen,*whiteBrush);
+            }
+
+            //on place les dames noirs
+            else if(jeu.getDamier(i_x,i_y) == -2){
+                scene->addEllipse(25*i_x,25*i_y,15,15,*redPen,*blackBrush);
+            }
         }
     }
 }
-*/
 
-//test qui marche
-//void MainWindow::placerPionBlanc(){
-  //      scene->addEllipse(pressX,pressY,15,15,*whitePen,*whiteBrush);
-//}
+bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
+
+    //La taille d'une case est de 25px
+    //on identifie avec cela les cases considérées
+    x_init /= 25;
+    y_init /= 25;
+    x_dest /= 25;
+    y_dest /= 25;
+
+
+    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
+        return true;
+
+    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
+        return false;
+
+   return false;
+}
+
 
 
 

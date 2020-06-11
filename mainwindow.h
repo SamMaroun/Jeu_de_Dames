@@ -13,6 +13,8 @@
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 
+#include "Plateau.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,32 +27,19 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    //getters et setters
-    int getPressX();
-    int getPressY();
-    std::vector<QGraphicsItem*> getAllItem();
-
     //Initialisation début de partie
     void initialisationPlateau();
 
-<<<<<<< HEAD
     //Afficher le plateau a chaque tour
     void afficherPlateau();
 
-
-
-
-
+    //Traitement des click pour le déplacement
+    bool traitement(int, int, int, int);
 
 public slots:
-    //void on_actionQuitter_triggerd();
-
 
     void placerPionBlanc();
-
     void mousePressEvent(QMouseEvent *actuel);
-    // TEST:void placerPionBlanc();
-
 
 signals:
     void mousePressed();
@@ -70,8 +59,19 @@ private:
     QBrush *blackBrush;
     QPen *blackPen;
 
-    int pressX;
-    int pressY;
+    //Dessiner les dames
+    QPen *redPen;
+
+    //Premier click
+    int pressXinitial;
+    int pressYinitial;
+
+    //Second click
+    int pressXsecond;
+    int pressYsecond;
+
+    //Instanciation d'un plateau
+    Plateau jeu;
 };
 
 #endif // MAINWINDOW_H
