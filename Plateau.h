@@ -6,8 +6,8 @@
 
 #ifndef PLATEAU_H
 #define PLATEAU_H
+#include <iostream>
 
-#include "Pion.h"
 
 class Plateau{
     public:
@@ -15,7 +15,13 @@ class Plateau{
         Plateau();
 
         //Déplacement : prend la position du pion
-        void deplacementPion(int pos_x, int pos_y);
+        int deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue);
+
+
+        //Déplacement d'une Dame
+        int deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue));
+
+
 
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné
@@ -26,7 +32,7 @@ class Plateau{
 
     private:
         //Le damier = plateau de pion
-        Pion m_damier[10][10];
+        int m_damier[10][10];
 
 };
 

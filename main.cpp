@@ -9,19 +9,18 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    w.placerPionBlanc();
+    //w.placerPionBlanc();
     w.initialisationPlateau();
-    /*QMouseEvent *e;
 
-    do{
-     w.mousePressEvent(e);
+<<<<<<< HEAD
 
        std::cout << w.getPressX() << std::endl;
        std::cout << w.getPressY() << std::endl;
-    }while(e != nullptr);
 
+=======
+    //std::vector<QGraphicsItem*> position_pions={};
+    //position_pions = w.getAllItem();
 
-    delete e;
-*/
+>>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
     return a.exec();
 }

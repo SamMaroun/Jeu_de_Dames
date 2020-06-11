@@ -7,18 +7,27 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Plateau.h"
+#include <iostream>
 
-void MainWindow::mousePressEvent(QMouseEvent *e)
+void MainWindow::mousePressEvent(QMouseEvent *actuel)
 {
     //On prend la position
-    QPointF pt = ui->graphicsView->mapToScene(e->pos());
+    QPointF pt = ui->graphicsView->mapToScene(actuel->pos());
 
     //qu'on adapte au position pressX et pressY
     pressX = pt.x();
     pressY = pt.y();
 
+    //pressX=5+25*(pressX/25); //position exact du pion en X
+
+    //pressY=5+25*(pressY/25); //position exact du pion en Y
+
     //On émet le signal pour que le slot soit déclencher
-    emit mousePressed();
+<<<<<<< HEAD
+   // emit mousePressed();
+=======
+    //emit mousePressed();
+>>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -64,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
     blackPen->setWidth(3); //largeur du pinceau
     blackBrush->setStyle(Qt::SolidPattern);//type de brosse
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -78,6 +89,31 @@ int MainWindow::getPressX(){
 int MainWindow::getPressY(){
     return pressY;
 }
+
+/*
+std::vector<QGraphicsItem*> MainWindow::getAllItem(){
+
+    //On récupère l'ensemble des items comme variable
+    QList<QGraphicsItem *> items = scene->items();
+    std::vector<QGraphicsItem*> pions;
+
+    foreach( QGraphicsItem *item, items )
+
+    {
+
+    pions.push_back (item);
+
+    int count = 0;
+    for(unsigned int i = 0; i<pions.size();i++)
+        count++;
+    //Je les stocke dans un tableau et les affiche
+    std::cout << count << std::endl;
+    }
+
+    pions.erase(pions.begin());
+    return pions;
+}
+*/
 
 void MainWindow::initialisationPlateau(){
 
@@ -112,11 +148,21 @@ void MainWindow::initialisationPlateau(){
     }
 
 }
+/*
+void MainWindow::afficherPlateau(){
+    for(int i_y=0; i_y<10; i_y++){
+        for(int i_x=0; i_x<10; i_x++){
+            scene->addEllipse();
+        }
+    }
+}
+*/
 
 //test qui marche
-void MainWindow::placerPionBlanc(){
-        scene->addEllipse(pressX,pressY,15,15,*whitePen,*whiteBrush);
-}
+//void MainWindow::placerPionBlanc(){
+  //      scene->addEllipse(pressX,pressY,15,15,*whitePen,*whiteBrush);
+//}
+
 
 
 //Recupérer les coordonnés d'un pion en cliquant dessus
