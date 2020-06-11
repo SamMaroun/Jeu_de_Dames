@@ -34,23 +34,23 @@ public:
     void initialisationPlateau();
 
 <<<<<<< HEAD
-     void mousePressEvent(QMouseEvent *e);
-=======
     //Afficher le plateau a chaque tour
     void afficherPlateau();
 
->>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
+
+
+
 
 
 public slots:
     //void on_actionQuitter_triggerd();
-<<<<<<< HEAD
+
 
     void placerPionBlanc();
-=======
+
     void mousePressEvent(QMouseEvent *actuel);
     // TEST:void placerPionBlanc();
->>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
+
 
 signals:
     void mousePressed();

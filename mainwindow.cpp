@@ -24,11 +24,10 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
 
     //On émet le signal pour que le slot soit déclencher
 <<<<<<< HEAD
+
    // emit mousePressed();
-=======
-    //emit mousePressed();
->>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
-}
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

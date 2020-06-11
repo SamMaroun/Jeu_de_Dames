@@ -14,10 +14,6 @@ int main(int argc, char *argv[])
 
 <<<<<<< HEAD
 
-       std::cout << w.getPressX() << std::endl;
-       std::cout << w.getPressY() << std::endl;
-
-=======
     //std::vector<QGraphicsItem*> position_pions={};
     //position_pions = w.getAllItem();
 
