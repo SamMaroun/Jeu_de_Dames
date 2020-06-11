@@ -14,6 +14,8 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     if(pressXinitial == 0 && pressYinitial == 0){
        pressXinitial = actuel->globalX();
        pressYinitial = actuel->globalY();
+
+       afficherSurbrillance(pressXinitial,pressYinitial);
     }
 
     else if(pressXinitial != 0 && pressYinitial != 0){
@@ -24,6 +26,9 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
 
     if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
         emit mousePressed();
+
+        pressXinitial=0;
+        pressYinitial=0;
     }
 }
 
@@ -33,9 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    //on connecte le slot avec l'affichage du plateau
-    QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
 
     //On initialise la scène
     scene = new QGraphicsScene(this);
@@ -73,6 +75,19 @@ MainWindow::MainWindow(QWidget *parent) :
     redPen = new QPen();
     redPen->setColor(Qt::red);
     redPen->setWidth(3); //largeur du pinceau
+
+    //Surbrillance
+    yellowBrush = new QBrush;
+    yellowPen = new QPen;
+
+    yellowBrush->setColor(Qt::yellow);
+    yellowPen->setColor(Qt::yellow);
+    yellowPen->setWidth(3);
+    yellowBrush.setStyle(Qt::SolidPattern);
+
+    //on connecte le slot avec l'affichage du plateau
+    QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
+
 }
 
 MainWindow::~MainWindow()
@@ -141,15 +156,25 @@ void MainWindow::afficherPlateau(){
     }
 }
 
+/*
+void MainWindow::afficherSurbrillance(int x, int y){
+    x /= 25;
+    y /= 25;
+
+
+
+}
+*/
+
 bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
 
     //La taille d'une case est de 25px
     //on identifie avec cela les cases considérées
     x_init /= 25;
     y_init /= 25;
+
     x_dest /= 25;
     y_dest /= 25;
-
 
     if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
         return true;

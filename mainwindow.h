@@ -33,12 +33,13 @@ public:
     //Afficher le plateau a chaque tour
     void afficherPlateau();
 
-    //Traitement des click pour le déplacement
+    //Traitement des cliques pour le déplacement
     bool traitement(int, int, int, int);
 
-public slots:
+    //Afficher la surbrillance
+    void afficherSurbrillance(int, int);
 
-    void placerPionBlanc();
+public slots:
     void mousePressEvent(QMouseEvent *actuel);
 
 signals:
@@ -62,11 +63,14 @@ private:
     //Dessiner les dames
     QPen *redPen;
 
-    //Premier click
+    //Dessiner surbrillance
+    QGraphicsRectItem *surbrillance;
+    QBrush *yellowBrush;
+    QPen *yellowPen;
+
+    //gestion clique de souris
     int pressXinitial;
     int pressYinitial;
-
-    //Second click
     int pressXsecond;
     int pressYsecond;
 
