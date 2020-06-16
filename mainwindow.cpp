@@ -23,7 +23,6 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
         pressXsecond = actuel->globalX();
         pressYsecond = actuel->globalY();
 
-    }
 
     if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
         emit mousePressed();
@@ -31,8 +30,6 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
         pressXinitial=0;
         pressYinitial=0;
     }
-}
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

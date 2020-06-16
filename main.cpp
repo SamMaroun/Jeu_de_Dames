@@ -12,5 +12,8 @@ int main(int argc, char *argv[])
     //w.placerPionBlanc();
     w.initialisationPlateau();
 
+
+    //std::vector<QGraphicsItem*> position_pions={};
+    //position_pions = w.getAllItem();
     return a.exec();
 }
