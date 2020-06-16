@@ -12,11 +12,11 @@ int main(int argc, char *argv[])
     //w.placerPionBlanc();
     w.initialisationPlateau();
 
-<<<<<<< HEAD
+
 
     //std::vector<QGraphicsItem*> position_pions={};
     //position_pions = w.getAllItem();
 
->>>>>>> 9802c7669237163bb0ec52000a06ad7f744bacaf
+
     return a.exec();
 }

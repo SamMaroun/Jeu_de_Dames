@@ -9,7 +9,7 @@
 Plateau::Plateau(){
     //Création d'un plateau
 
-     m_damier=[ [ 0,-1, 0,-1, 0,-1, 0,-1, 0,-1],
+     m_damier=[[ 0,-1, 0,-1, 0,-1, 0,-1, 0,-1],
                 [-1, 0,-1, 0,-1, 0,-1, 0,-1, 0],
                 [ 0,-1, 0,-1, 0,-1, 0,-1, 0,-1],
                 [-1, 0,-1, 0,-1, 0,-1, 0,-1, 0],
@@ -29,7 +29,7 @@ Plateau::Plateau(){
 
 
 
-int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
+int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){ //Retourne 0 si le tour c'est bien passé, 1 sinon
 
     if(m_damier[pos_x][pos_y]==m_damier[pos_xvoulue][pos_yvoulue]){ //On test si on mange un allié
         std::cout<< "On ne mange pas nos alliés"<< std::endl;
@@ -37,14 +37,45 @@ int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoul
     }
 
     if(m_damier[pos_x][pos_y]!=m_damier[pos_xvoulue][pos_yvoulue]){ //On veut manger un ennemi
-       int decalage = pos_x - pos_xvoulue; //stock la direction de manger
-       if(mpos_xvoulue+decalage==0)
+
+           int decalageX = pos_x - pos_xvoulue; //stock la direction de manger
+           int decalageY = pos_y- pos_yvoulue;
+
+           if(m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]==0){ //Mange un pion ennemi
+                   m_damier[pos_xvoulue][pos_yvoulue]=0;
+                   m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=m_damier[pos_x][pos_y];
+
+
+                   if(m_damier[pos_x][pos_y]==1 && pos_yvoulue - decalageY==0){// Création dame après avoir mangé
+                       m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=2;
+                   }
+                   if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue - decalageY==9){// Création dame après avoir mangé
+                       m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=-2;
+                   }
+
+                   m_damier[pos_x][pos_y]=0;
+                   return 0;
+           }
+
+           if(m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]!=0){
+               std::cout<<"Il n'y a pas de place après le pion que tu veux manger."<<std::endl;
+                return 1;
+           }
 
     }
 
     if(m_damier[pos_xvoulue][pos_yvoulue]==0){ //On se déplace sur un 0
        m_damier[pos_xvoulue][pos_yvoulue]=m_damier[pos_x][pos_y];
-       m_damier[pos_x][pos_y]=0;
+
+       if(m_damier[pos_x][pos_y]==1 && pos_yvoulue==0){// Création dame après avoir mangé
+           m_damier[pos_xvoulue][pos_yvoulue]=2;}
+
+       if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue==9){// Création dame après avoir mangé
+           m_damier[pos_xvoulue ][pos_yvoulue]=-2;}
+
+           m_damier[pos_x][pos_y]=0;
+
+
        return 0;
     }
 }
@@ -59,9 +90,9 @@ int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoul
 
 
 
-int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
+//int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
 
-}
+//}
 
 
 

@@ -19,7 +19,7 @@ class Plateau{
 
 
         //Déplacement d'une Dame
-        int deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue));
+        int deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue);
 
 
 

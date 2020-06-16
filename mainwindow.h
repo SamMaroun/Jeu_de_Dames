@@ -33,7 +33,6 @@ public:
     //Initialisation début de partie
     void initialisationPlateau();
 
-<<<<<<< HEAD
     //Afficher le plateau a chaque tour
     void afficherPlateau();
 

@@ -23,10 +23,10 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     //pressY=5+25*(pressY/25); //position exact du pion en Y
 
     //On émet le signal pour que le slot soit déclencher
-<<<<<<< HEAD
+
 
    // emit mousePressed();
-
+}
 
 
 MainWindow::MainWindow(QWidget *parent) :
