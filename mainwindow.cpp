@@ -15,9 +15,10 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
        pressXinitial = actuel->globalX();
        pressYinitial = actuel->globalY();
 
-       afficherSurbrillance(pressXinitial,pressYinitial);
+       //afficherSurbrillance(pressXinitial,pressYinitial);
     }
 
+    //On prend la position de la case de destination
     else if(pressXinitial != 0 && pressYinitial != 0){
         pressXsecond = actuel->globalX();
         pressYsecond = actuel->globalY();
@@ -83,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
     yellowBrush->setColor(Qt::yellow);
     yellowPen->setColor(Qt::yellow);
     yellowPen->setWidth(3);
-    yellowBrush.setStyle(Qt::SolidPattern);
+    yellowBrush->setStyle(Qt::SolidPattern);
 
     //on connecte le slot avec l'affichage du plateau
     QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
@@ -95,7 +96,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
+//On initialise l'ensemble du plateau
 void MainWindow::initialisationPlateau(){
     //Placement des Pions Noir
     //Impaire
@@ -129,6 +130,8 @@ void MainWindow::initialisationPlateau(){
 
 }
 
+//A chaque nouveau déplacement on parcourt le damier
+//On place alors les pions sur le plateau en fonction de leurs positions
 void MainWindow::afficherPlateau(){
     for(int i_y=0; i_y<10; i_y++){
         for(int i_x=0; i_x<10; i_x++){
@@ -166,6 +169,9 @@ void MainWindow::afficherSurbrillance(int x, int y){
 }
 */
 
+//On récupère les cliques de la fonction, on les traite avec la methode
+//deplacement de plateau
+//true, si le traitement à réussi
 bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
 
     //La taille d'une case est de 25px
@@ -176,10 +182,11 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
     x_dest /= 25;
     y_dest /= 25;
 
+    //SAMAMAMAMAMA::::::Modifier 0 et 1 car pas clair
     if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
         return true;
 
-    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
+    else if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
         return false;
 
    return false;
