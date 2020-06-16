@@ -24,7 +24,9 @@ Plateau::Plateau(){
                 ];
 }
 
-
+int Plateau::getDamier(int x,int y) const{
+    return m_damier[x][y];
+}
 
 
 
@@ -90,10 +92,11 @@ int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoul
 
 
 
-//int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
+/*
+int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
 
-//}
-
+}
+*/
 
 
 int Plateau::victoire(){
