@@ -19,17 +19,19 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     }
 
     //On prend la position de la case de destination
-    else if(pressXinitial != 0 && pressYinitial != 0){
+    if(pressXinitial != 0 && pressYinitial != 0){
         pressXsecond = actuel->globalX();
         pressYsecond = actuel->globalY();
-
+    }
 
     if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
+        //if
         emit mousePressed();
 
         pressXinitial=0;
         pressYinitial=0;
     }
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -86,6 +88,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //on connecte le slot avec l'affichage du plateau
     QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
 
+    //On met les cliques souris initiaux à 0
+    pressXinitial=0;
+    pressYinitial=0;
+
 }
 
 MainWindow::~MainWindow()
@@ -99,14 +105,14 @@ void MainWindow::initialisationPlateau(){
     //Impaire
     for(int i_y=1; i_y<4; i_y+=2){
         for(int i_x=1; i_x<6; i_x++){
-            scene->addEllipse(52*i_x,25*i_y,15,15,*blackPen,*blackBrush);
+            scene->addEllipse(52*i_x-20,25*i_y-20,15,15,*blackPen,*blackBrush);
         }
     }
 
     //Paire
     for(int i_y=0; i_y<3; i_y+=2){
         for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+25,25*i_y+52,15,15,*blackPen,*blackBrush);
+            scene->addEllipse(52*i_x+25-20,25*i_y+52-20,15,15,*blackPen,*blackBrush);
         }
     }
 
@@ -114,14 +120,14 @@ void MainWindow::initialisationPlateau(){
     //Impaire
     for(int i_y=1; i_y<4; i_y+=2){
         for(int i_x=1; i_x<6; i_x++){
-            scene->addEllipse(52*i_x,25*i_y+152,15,15,*whitePen,*whiteBrush);
+            scene->addEllipse(52*i_x-20,25*i_y+152-20,15,15,*whitePen,*whiteBrush);
         }
     }
 
     //Paire
     for(int i_y=0; i_y<3; i_y+=2){
         for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+25,25*i_y+204,15,15,*whitePen,*whiteBrush);
+            scene->addEllipse(52*i_x+25-20,25*i_y+204-20,15,15,*whitePen,*whiteBrush);
         }
     }
 
@@ -130,6 +136,11 @@ void MainWindow::initialisationPlateau(){
 //A chaque nouveau déplacement on parcourt le damier
 //On place alors les pions sur le plateau en fonction de leurs positions
 void MainWindow::afficherPlateau(){
+
+    //Ici, on supprimer tous les éléments du tableau précédent
+    supprimerElement();
+
+    //et on place nos pions
     for(int i_y=0; i_y<10; i_y++){
         for(int i_x=0; i_x<10; i_x++){
 
@@ -156,16 +167,6 @@ void MainWindow::afficherPlateau(){
     }
 }
 
-/*
-void MainWindow::afficherSurbrillance(int x, int y){
-    x /= 25;
-    y /= 25;
-
-
-
-}
-*/
-
 //On récupère les cliques de la fonction, on les traite avec la methode
 //deplacement de plateau
 //true, si le traitement à réussi
@@ -189,8 +190,24 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
    return false;
 }
 
+/*
+void MainWindow::afficherSurbrillance(int x, int y){
+    x /= 25;
+    y /= 25;
+}
+*/
 
-
+//Supprimer l'ensemble des elements du plateau
+void MainWindow::supprimerElement(){
+    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
+       for (QGraphicsItem *item : qAsConst(selectedItems)) {
+               int count=0;
+               count++;
+               std::cout << count << std::endl;
+               scene->removeItem(item);
+               delete item;
+   }
+}
 
 //Recupérer les coordonnés d'un pion en cliquant dessus
 //puis cliquer sur une case autorisé pour le déplacer

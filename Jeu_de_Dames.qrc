@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/images">
         <file>Plateau300-296.jpg</file>
-        <file>Plateau400-394.jpg</file>
-        <file>Plateau600-591.jpg</file>
     </qresource>
 </RCC>

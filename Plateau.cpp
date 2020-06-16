@@ -7,21 +7,26 @@
 #include "Plateau.h"
 
 Plateau::Plateau(){
-    //Création d'un plateau
+    //Création d'un plateau de jeu
+     int damier[10][10] =
+              { { 0,-1, 0,-1, 0,-1, 0,-1, 0,-1},
+                {-1, 0,-1, 0,-1, 0,-1, 0,-1, 0},
+                { 0,-1, 0,-1, 0,-1, 0,-1, 0,-1},
+                {-1, 0,-1, 0,-1, 0,-1, 0,-1, 0},
 
-     m_damier=[[ 0,-1, 0,-1, 0,-1, 0,-1, 0,-1],
-                [-1, 0,-1, 0,-1, 0,-1, 0,-1, 0],
-                [ 0,-1, 0,-1, 0,-1, 0,-1, 0,-1],
-                [-1, 0,-1, 0,-1, 0,-1, 0,-1, 0],
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
-                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
+                { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0} };
 
-                [ 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                [ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-                [ 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                [ 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-                ];
+     for(int y=0; y<10; y++){
+         for(int x=0; x<10; x++){
+             m_damier[x][y]= damier[x][y];
+         }
+     }
 }
 
 int Plateau::getDamier(int x,int y) const{
@@ -66,20 +71,21 @@ int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoul
 
     }
 
-    if(m_damier[pos_xvoulue][pos_yvoulue]==0){ //On se déplace sur un 0
+    if(m_damier[pos_xvoulue][pos_yvoulue]==0){ //On se deplace sur un 0
        m_damier[pos_xvoulue][pos_yvoulue]=m_damier[pos_x][pos_y];
 
-       if(m_damier[pos_x][pos_y]==1 && pos_yvoulue==0){// Création dame après avoir mangé
-           m_damier[pos_xvoulue][pos_yvoulue]=2;}
+       if(m_damier[pos_x][pos_y]==1 && pos_yvoulue==0)// Creation dame apres avoir mange
+           m_damier[pos_xvoulue][pos_yvoulue]=2;
 
-       if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue==9){// Création dame après avoir mangé
-           m_damier[pos_xvoulue ][pos_yvoulue]=-2;}
 
-           m_damier[pos_x][pos_y]=0;
+       if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue==9)//Creation dame aprs avoir mang
+           m_damier[pos_xvoulue ][pos_yvoulue]=-2;
 
+       m_damier[pos_x][pos_y]=0;
 
        return 0;
     }
+    return 1;
 }
 
 
