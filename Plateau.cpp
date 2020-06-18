@@ -88,16 +88,6 @@ int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoul
     return 1;
 }
 
-
-
-
-
-
-
-
-
-
-
 /*
 int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
 

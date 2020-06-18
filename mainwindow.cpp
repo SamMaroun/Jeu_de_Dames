@@ -8,7 +8,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 
-void MainWindow::mousePressEvent(QMouseEvent *actuel)
+void MainWindow::mousePressEvent(QMouseEvent *actuel, QMouseEvent *destination)
 {
     //On prend la position du premier clique
     if(pressXinitial == 0 && pressYinitial == 0){
@@ -19,18 +19,23 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     }
 
     //On prend la position de la case de destination
-    if(pressXinitial != 0 && pressYinitial != 0){
-        pressXsecond = actuel->globalX();
-        pressYsecond = actuel->globalY();
+    if(pressXinitial != 0 && pressYinitial != 0
+            && pressXsecond == 0 && pressYsecond == 0){
+        pressXsecond = destination->globalX();
+        pressYsecond = destination->globalY();
     }
 
     if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
-        //if
         emit mousePressed();
 
         pressXinitial=0;
         pressYinitial=0;
+
+        pressXsecond=0;
+        pressYsecond=0;
     }
+
+
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -88,9 +93,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //on connecte le slot avec l'affichage du plateau
     QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
 
-    //On met les cliques souris initiaux à 0
+    //On met les cliques sourisà 0
     pressXinitial=0;
     pressYinitial=0;
+    pressXsecond=0;
+    pressYsecond=0;
 
 }
 
@@ -112,7 +119,7 @@ void MainWindow::initialisationPlateau(){
     //Paire
     for(int i_y=0; i_y<3; i_y+=2){
         for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+25-20,25*i_y+52-20,15,15,*blackPen,*blackBrush);
+            scene->addEllipse(52*i_x+5,25*i_y+32,15,15,*blackPen,*blackBrush);
         }
     }
 
@@ -120,14 +127,14 @@ void MainWindow::initialisationPlateau(){
     //Impaire
     for(int i_y=1; i_y<4; i_y+=2){
         for(int i_x=1; i_x<6; i_x++){
-            scene->addEllipse(52*i_x-20,25*i_y+152-20,15,15,*whitePen,*whiteBrush);
+            scene->addEllipse(52*i_x-20,25*i_y+132,15,15,*whitePen,*whiteBrush);
         }
     }
 
     //Paire
     for(int i_y=0; i_y<3; i_y+=2){
         for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+25-20,25*i_y+204-20,15,15,*whitePen,*whiteBrush);
+            scene->addEllipse(52*i_x+5,25*i_y+184,15,15,*whitePen,*whiteBrush);
         }
     }
 
@@ -141,27 +148,27 @@ void MainWindow::afficherPlateau(){
     supprimerElement();
 
     //et on place nos pions
-    for(int i_y=0; i_y<10; i_y++){
-        for(int i_x=0; i_x<10; i_x++){
+    for(int i_x=0; i_x<10; i_x++){
+        for(int i_y=0; i_y<10; i_y++){
 
             //on place les pions blancs
             if(jeu.getDamier(i_x,i_y) == 1){
-                scene->addEllipse(25*i_x,25*i_y,15,15,*whitePen,*whiteBrush);
+                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*whitePen,*whiteBrush);
             }
 
             //on place les pions noirs
             else if(jeu.getDamier(i_x,i_y) == -1){
-                scene->addEllipse(25*i_x,25*i_y,15,15,*blackPen,*blackBrush);
+                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*blackPen,*blackBrush);
             }
 
             //on place les dames blanches
-            if(jeu.getDamier(i_x,i_y) == 2){
-                scene->addEllipse(25*i_x,25*i_y,15,15,*redPen,*whiteBrush);
+            else if(jeu.getDamier(i_x,i_y) == 2){
+                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*redPen,*whiteBrush);
             }
 
             //on place les dames noirs
             else if(jeu.getDamier(i_x,i_y) == -2){
-                scene->addEllipse(25*i_x,25*i_y,15,15,*redPen,*blackBrush);
+                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*redPen,*blackBrush);
             }
         }
     }
@@ -181,12 +188,14 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
     y_dest /= 25;
 
     //SAMAMAMAMAMA::::::Modifier 0 et 1 car pas clair
-    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
-        return true;
+    if(x_init < 0 && x_init >25 && y_init < 0 && y_init >25
+       && x_dest < 0 && x_dest >25 && y_init < 0 && y_dest >25){
+        if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
+            return true;
 
-    else if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
-        return false;
-
+        else if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
+            return false;
+   }
    return false;
 }
 

@@ -40,7 +40,7 @@ public:
     void supprimerElement();
 
 public slots:
-    void mousePressEvent(QMouseEvent *actuel);
+    void mousePressEvent(QMouseEvent *actuel, QMouseEvent *destination);
 
     //Afficher le plateau a chaque tour
     void afficherPlateau();
