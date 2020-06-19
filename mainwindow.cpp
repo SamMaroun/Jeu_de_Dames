@@ -15,8 +15,6 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
        pressXinitial = actuel->y();
        pressYinitial = actuel->x();
 
-       std::cout << "pressFirst" << std::endl;
-
        //afficherSurbrillance(pressXinitial,pressYinitial);
     }
 
@@ -26,23 +24,45 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
         pressXsecond = actuel->y();
         pressYsecond = actuel->x();
 
-        std::cout << "pressSecond" << std::endl;
+        int couleur = jeu.getDamier(pressXinitial/25,pressYinitial/25);
 
-        std::cout << "xinit = " << pressXinitial << "yinit = " << pressYinitial
-                     << "xsec = " << pressXsecond << "ysec = " << pressYsecond;
+        //gestion du tour par tour
+        if(auTourDesBlancs){
+         if(couleur == 1){
+             if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
+                 emit mousePressed();
+                 auTourDesBlancs = false;
+                 qDebug() << auTourDesBlancs;
+             }
+         }
+        }
 
-        if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
-            emit mousePressed();
+        else{
+            if(couleur == -1){
+                if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
+                    emit mousePressed();
+                    auTourDesBlancs = true;
+                    qDebug() << auTourDesBlancs;
+                }
+            }
+        }
 
-            std::cout << "press" << std::endl;
+        pressYinitial=0;
+        pressXinitial=0;
+        pressYsecond=0;
+        pressXsecond=0;
 
-            pressYinitial=0;
-            pressXinitial=0;
+        if(jeu.victoire() != 0){
 
-            pressYsecond=0;
-            pressXsecond=0;
+            if(jeu.victoire() == 1)
+                qDebug() << "victoire blanc";
+
+            else
+                qDebug() << "victoire noir";
         }
     }
+
+
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -106,6 +126,9 @@ MainWindow::MainWindow(QWidget *parent) :
     pressXsecond=0;
     pressYsecond=0;
 
+    //gestion du tour par tour
+    auTourDesBlancs = true;
+
 }
 
 MainWindow::~MainWindow()
@@ -166,10 +189,7 @@ void MainWindow::afficherPlateau(){
 //On récupère les cliques de la fonction, on les traite avec la methode
 //deplacement de plateau
 //true, si le traitement à réussi
-bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
-
-    std::cout << "debut fonction traitement" << "xinit=" << x_init << "yinit=" << y_init
-              << "xdest=" << x_dest << "ydest=" << y_dest;
+bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest, int couleur){
 
     //La taille d'une case est de 25px
     //on identifie avec cela les cases considérées
@@ -179,11 +199,8 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
     x_dest /= 25;
     y_dest /= 25;
 
-    std::cout << "xinit=" << x_init << "yinit=" << y_init
-              << "xdest=" << x_dest << "ydest=" << y_dest;
-
     //si le deplacement est possible
-    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest))
+    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest, couleur))
         return true;
 
     else

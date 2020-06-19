@@ -12,6 +12,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
+#include <QDebug>
 
 #include "Plateau.h"
 
@@ -31,7 +32,7 @@ public:
     void initialisationPlateau();
 
     //Traitement des cliques pour le déplacement
-    bool traitement(int, int, int, int);
+    bool traitement(int, int, int, int, int);
 
     //Afficher la surbrillance
     //void afficherSurbrillance(int, int);
@@ -76,6 +77,9 @@ private:
     int pressYinitial;
     int pressXsecond;
     int pressYsecond;
+
+    //gestion du tour par tour
+    bool auTourDesBlancs;
 
     //Instanciation d'un plateau
     Plateau jeu;

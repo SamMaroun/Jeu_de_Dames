@@ -15,12 +15,10 @@ class Plateau{
         Plateau();
 
         //Déplacement : prend la position du pion
-        bool deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue);
-
+        bool deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue, int couleur);
 
         //Déplacement d'une Dame
         bool deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue);
-
 
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné

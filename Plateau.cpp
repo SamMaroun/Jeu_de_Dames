@@ -35,10 +35,10 @@ int Plateau::getDamier(int x,int y) const{
 }
 
 //true si le déplacement est bien effectué
-bool Plateau::deplacementPion(int x_init, int y_init,int x_dest, int y_dest){ //Retourne 0 si le tour c'est bien passé, 1 sinon
+bool Plateau::deplacementPion(int x_init, int y_init,int x_dest, int y_dest, int couleur){ //Retourne 0 si le tour c'est bien passé, 1 sinon
 
-    if(m_damier[x_init][y_init] == m_damier[x_dest][y_dest])
-        return false;
+    //couleur opposant
+    int couleurOpposant = couleur*(-1);
 
     //si decalageX positif, deplacement bas vers haut
     int decalageX = x_init - x_dest; //inversement si decalageX negatif
@@ -46,84 +46,77 @@ bool Plateau::deplacementPion(int x_init, int y_init,int x_dest, int y_dest){ //
     //si decalage Y positif, deplacement gauche vers droite
     int decalageY = y_init - y_dest; //inversement si decalageY negatif
 
-    //Ce sont les pions blanc qui jouent
-    if(decalageX > 0){
+    if(m_damier[x_init][y_init] == m_damier[x_dest][y_dest])
+        return false;
 
-        //un déplacement de base sur une case vide
-        if(decalageX == 1){
+    //un déplacement de base sur une case vide
+    if(decalageX == 1 && (decalageY == 1 || decalageY == -1)){
 
-            //On verifié que la case destination est vide
-            if(m_damier[x_dest][y_dest] == 0){
-                m_damier[x_dest][y_dest] = 1;//On place le pion blanc à sa destination
-                m_damier[x_init][y_init] = 0;//On le supprime de sa position initiale
+        //On verifié que la case destination est vide
+        if(m_damier[x_dest][y_dest] == 0 && couleur != -1){
+            m_damier[x_dest][y_dest] = couleur;//On place le pion blanc à sa destination
+            m_damier[x_init][y_init] = 0;//On le supprime de sa position initiale
 
-                return true;
-            }
-
-            //Si elle n'est pas vide, le déplacement est impossible
-            else
-                return false;
+            return true;
         }
 
-        //Réalisation d'une prise
-        else if(decalageX == 2){
-
-            //test si pion de la prise est noir et que la destination est vide
-            //la prise peut s'effectuer
-            if(m_damier[x_init+1][y_init+decalageY/2] == -1
-                    && m_damier[x_dest][y_dest] == 0){
-                m_damier[x_dest][y_dest] = 1;//destination le pion est blanc
-                m_damier[x_init][y_init] = 0;//initial plus de pion
-                m_damier[x_init+1][y_init+decalageY/2] = 0; //la prise fonctionne, plus de pion
-
-                for(int x=0; x<10; x++){
-                    for(int y=0; y<10; y++){
-                        std::cout << m_damier[x][y];
-                    }
-                }
-                    return true;
-            }
-
-            else
-                return false;
-        }
-    }
-
-    //Ce sont les pions noirs qui jouent
-    else{
-        //deplacement de base sur une case vide
-        if(decalageX == -1){
-
-            //On verifié que la case destination est vide
-            if(m_damier[x_dest][y_dest] == 0){
-                m_damier[x_dest][y_dest] = -1;//On place le pion noir à sa destination
-                m_damier[x_init][y_init] = 0;//On le supprime de sa position initiale
-
-                return true;
-            }
-
-            //Si elle n'est pas vide, le déplacement est impossible
-            else
-                return false;
+        //Si elle n'est pas vide, le déplacement est impossible
+        else
+            return false;
         }
 
-        else if(decalageX == -2){
+    //Réalisation d'une prise
+    else if(decalageX == 2){
+        //test si pion de la prise est noir et que la destination est vide
+        //la prise peut s'effectuer
+        if(m_damier[x_init-1][y_init-decalageY/2] == couleurOpposant
+           && m_damier[x_dest][y_dest] == 0){
 
-            //test si pion de la prise est noir et que la destination est vide
-            //la prise peut s'effectuer
-            if(m_damier[x_init-1][y_init+decalageY/2] == 1
-                    && m_damier[x_dest][y_dest] == 0){
-                m_damier[x_dest][y_dest] = -1;//destination le pion est blanc
-                m_damier[x_init][y_init] = 0;//initial plus de pion
-                m_damier[x_init-1][y_init+decalageY/2] = 0; //la prise fonctionne, plus de pion
+            m_damier[x_dest][y_dest] = couleur;//destination le pion est blanc
+            m_damier[x_init][y_init] = 0;//initial plus de pion
+            m_damier[x_init-1][y_init-decalageY/2] = 0; //la prise fonctionne, plus de pion
 
-                return true;
-            }
+            return true;
+         }
 
-            else
-                return false;
+         else
+            return false;
         }
-    }
+
+    //deplacement noir de base sur une case vide
+    if(decalageX == -1 && (decalageY == 1 || decalageY == -1)){
+
+        //On verifié que la case destination est vide
+        if(m_damier[x_dest][y_dest] == 0 && couleur != 1){
+            m_damier[x_dest][y_dest] = couleur;//On place le pion noir à sa destination
+            m_damier[x_init][y_init] = 0;//On le supprime de sa position initiale
+
+            return true;
+         }
+
+         //Si elle n'est pas vide, le déplacement est impossible
+         else
+            return false;
+        }
+
+     else if(decalageX == -2){
+
+        //test si pion de la prise est noir et que la destination est vide
+        //la prise peut s'effectuer
+        if(m_damier[x_init+1][y_init-decalageY/2] == couleurOpposant
+            && m_damier[x_dest][y_dest] == 0){
+
+            m_damier[x_dest][y_dest] = couleur;//destination le pion est blanc
+            m_damier[x_init][y_init] = 0;//initial plus de pion
+            m_damier[x_init+1][y_init-decalageY/2] = 0; //la prise fonctionne, plus de pion
+
+            return true;
+         }
+
+         else
+            return false;
+        }
+
     return false;
 }
 
@@ -195,7 +188,7 @@ int Plateau::victoire(){
                nbPionsBlanc++;
 
            if(m_damier[x][y] == -1 || m_damier[x][y] == -2)
-               nbPionsBlanc++;
+               nbPionsNoir++;
         }
     }
 
