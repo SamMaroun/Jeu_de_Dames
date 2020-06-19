@@ -34,13 +34,13 @@ public:
     bool traitement(int, int, int, int);
 
     //Afficher la surbrillance
-    void afficherSurbrillance(int, int);
+    //void afficherSurbrillance(int, int);
 
     //Supprimer l'ensemble des elements du plateau
     void supprimerElement();
 
 public slots:
-    void mousePressEvent(QMouseEvent *actuel, QMouseEvent *destination);
+    void mousePressEvent(QMouseEvent *actuel);
 
     //Afficher le plateau a chaque tour
     void afficherPlateau();

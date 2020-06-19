@@ -22,9 +22,10 @@ Plateau::Plateau(){
                 { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
                 { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0} };
 
-     for(int y=0; y<10; y++){
-         for(int x=0; x<10; x++){
+     for(int x=0; x<10; x++){
+         for(int y=0; y<10; y++){
              m_damier[x][y]= damier[x][y];
+             std::cout << m_damier[x][y];
          }
      }
 }
@@ -33,78 +34,83 @@ int Plateau::getDamier(int x,int y) const{
     return m_damier[x][y];
 }
 
+//true si le déplacement est possible
+bool Plateau::deplacementPion(int x_init, int y_init,int x_dest, int y_dest){ //Retourne 0 si le tour c'est bien passé, 1 sinon
 
+    if(m_damier[x_init][y_init] == m_damier[x_dest][y_dest])
+        return false;
 
+    int decalageX = x_init - x_dest;
+    int decalageY = y_init - y_dest;
 
-int Plateau::deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){ //Retourne 0 si le tour c'est bien passé, 1 sinon
-
-    if(m_damier[pos_x][pos_y]==m_damier[pos_xvoulue][pos_yvoulue]){ //On test si on mange un allié
+    /*if(m_damier[pos_x][pos_y]==m_damier[pos_x_dest][pos_y_dest]){ //On test si on mange un allié
         std::cout<< "On ne mange pas nos alliés"<< std::endl;
-        return 1;
+        return false;
     }
 
-    if(m_damier[pos_x][pos_y]!=m_damier[pos_xvoulue][pos_yvoulue]){ //On veut manger un ennemi
+    if(m_damier[pos_x][pos_y]!=m_damier[pos_x_dest][pos_y_dest]){ //On veut manger un ennemi
 
-           int decalageX = pos_x - pos_xvoulue; //stock la direction de manger
-           int decalageY = pos_y- pos_yvoulue;
-
-           if(m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]==0){ //Mange un pion ennemi
-                   m_damier[pos_xvoulue][pos_yvoulue]=0;
-                   m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=m_damier[pos_x][pos_y];
+           int decalageX = pos_x - pos_x_dest; //stock la direction de manger
+           int decalageY = pos_y- pos_y_dest;
 
 
-                   if(m_damier[pos_x][pos_y]==1 && pos_yvoulue - decalageY==0){// Création dame après avoir mangé
-                       m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=2;
+           if(m_damier[pos_x_dest - decalageX][pos_y_dest - decalageY]==0){ //Mange un pion ennemi
+                   m_damier[pos_x_dest][pos_y_dest]=0;
+                   m_damier[pos_x_dest - decalageX][pos_y_dest - decalageY]=m_damier[pos_x][pos_y];
+
+
+                   if(m_damier[pos_x][pos_y]==1 && pos_y_dest - decalageY==0){// Création dame après avoir mangé
+                       m_damier[pos_x_dest - decalageX][pos_y_dest - decalageY]=2;
                    }
-                   if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue - decalageY==9){// Création dame après avoir mangé
-                       m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]=-2;
+                   if(m_damier[pos_x][pos_y]==-1 && pos_y_dest - decalageY==9){// Création dame après avoir mangé
+                       m_damier[pos_x_dest - decalageX][pos_y_dest - decalageY]=-2;
                    }
 
                    m_damier[pos_x][pos_y]=0;
-                   return 0;
+                   return true;
            }
 
-           if(m_damier[pos_xvoulue - decalageX][pos_yvoulue - decalageY]!=0){
+           if(m_damier[pos_x_dest - decalageX][pos_y_dest - decalageY]!=0){
                std::cout<<"Il n'y a pas de place après le pion que tu veux manger."<<std::endl;
-                return 1;
+                return false;
            }
 
     }
 
-    if(m_damier[pos_xvoulue][pos_yvoulue]==0){ //On se deplace sur un 0
-       m_damier[pos_xvoulue][pos_yvoulue]=m_damier[pos_x][pos_y];
+    if(m_damier[pos_x_dest][pos_y_dest]==0){ //On se deplace sur un 0
+       m_damier[pos_x_dest][pos_y_dest]=m_damier[pos_x][pos_y];
 
-       if(m_damier[pos_x][pos_y]==1 && pos_yvoulue==0)// Creation dame apres avoir mange
-           m_damier[pos_xvoulue][pos_yvoulue]=2;
+       if(m_damier[pos_x][pos_y]==1 && pos_y_dest==0)// Creation dame apres avoir mange
+           m_damier[pos_x_dest][pos_y_dest]=2;
 
 
-       if(m_damier[pos_x][pos_y]==-1 && pos_yvoulue==9)//Creation dame aprs avoir mang
-           m_damier[pos_xvoulue ][pos_yvoulue]=-2;
+       if(m_damier[pos_x][pos_y]==-1 && pos_y_dest==9)//Creation dame aprs avoir mang
+           m_damier[pos_x_dest ][pos_y_dest]=-2;
 
        m_damier[pos_x][pos_y]=0;
 
-       return 0;
+       return true;
     }
-    return 1;
+    return false;*/
 }
 
 /*
-int Plateau::deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue){
+bool Plateau::deplacementDame(int pos_x, int pos_y,int pos_x_dest, int pos_y_dest){
 
 }
 */
 
-
+//WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 int Plateau::victoire(){
     int nbPionsBlanc = 0;
     int nbPionsNoir = 0;
 
-    for(int i_y = 0; i_y<10; i_y++){
-        for(int i_x = 0; i_x<10; i_x++){
-           if(m_damier[i_x][i_y] == 1 || m_damier[i_x][i_y] ==2)
+    for(int x = 0; x<10; x++){
+        for(int y = 0; y<10; y++){
+           if(m_damier[x][y] == 1 || m_damier[x][y] ==2)
                nbPionsBlanc++;
 
-           if(m_damier[i_x][i_y] == -1 || m_damier[i_x][i_y] == -2)
+           if(m_damier[x][y] == -1 || m_damier[x][y] == -2)
                nbPionsBlanc++;
         }
     }
@@ -122,66 +128,3 @@ int Plateau::victoire(){
         return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*    //Placement des noirs impaire
-    //Tous les pions sont mort par défaut, on les passe à vivant
-    //Et on met la couleur noir
-    for(int i_y=0; i_y<4; i_y+=2){
-        for(int i_x=1; i_x<10; i_x+=2){
-            m_damier[i_x][i_y].setEstMort(false);
-            m_damier[i_x][i_y].setCouleur("Noir");
-
-        }
-    }
-
-    //Placement des noirs paire
-    for(int i_y=1; i_y<4; i_y+=2){
-        for(int i_x=0; i_x<10; i_x+=2){
-            m_damier[i_x][i_y].setEstMort(false);
-            m_damier[i_x][i_y].setCouleur("Noir");
-        }
-    }
-
-    //Placement des blancs impaire
-    //Tous les pions sont blanc par défaut
-    //Inutile de set la couleur ici
-    for(int i_y=8; i_y<5; i_y-=2){
-        for(int i_x=1; i_x<10; i_x-=2){
-            m_damier[i_x][i_y].setEstMort(false);
-        }
-    }
-
-    //Placement des blancs paire
-    for(int i_y=9; i_y<5; i_y-=2){
-        for(int i_x=0; i_x<10; i_x-=2){
-             m_damier[i_x][i_y].setEstMort(false);
-        }
-    }
-
-    //Placement des cases vides (Pion mort)
-       for(int i_y=4; i_y<6; i_y++){
-           for(int i_x=0; i_x<10; i_x++){
-               m_damier[i_x][i_y].setEstMort(true);
-           }
-       }
-
-} */

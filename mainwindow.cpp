@@ -8,34 +8,38 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 
-void MainWindow::mousePressEvent(QMouseEvent *actuel, QMouseEvent *destination)
+void MainWindow::mousePressEvent(QMouseEvent *actuel)
 {
     //On prend la position du premier clique
     if(pressXinitial == 0 && pressYinitial == 0){
-       pressXinitial = actuel->globalX();
-       pressYinitial = actuel->globalY();
+       pressXinitial = actuel->x();
+       pressYinitial = actuel->y();
+
+       std::cout << "pressFirst" << std::endl;
 
        //afficherSurbrillance(pressXinitial,pressYinitial);
     }
 
     //On prend la position de la case de destination
-    if(pressXinitial != 0 && pressYinitial != 0
+    else if(pressXinitial != 0 && pressYinitial != 0
             && pressXsecond == 0 && pressYsecond == 0){
-        pressXsecond = destination->globalX();
-        pressYsecond = destination->globalY();
+        pressXsecond = actuel->x();
+        pressYsecond = actuel->y();
+
+        std::cout << "pressSecond" << std::endl;
+
+        if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
+            emit mousePressed();
+
+            std::cout << "press" << std::endl;
+
+            pressXinitial=0;
+            pressYinitial=0;
+
+            pressXsecond=0;
+            pressYsecond=0;
+        }
     }
-
-    if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
-        emit mousePressed();
-
-        pressXinitial=0;
-        pressYinitial=0;
-
-        pressXsecond=0;
-        pressYsecond=0;
-    }
-
-
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -54,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
     //On ajoute l'image du damier à cette scène
-    fond = scene->addPixmap(QPixmap(":/images/Plateau300-296.jpg"));
+    fond = scene->addPixmap(QPixmap(":/Plateau250x250.jpg"));
 
     //Initialisation des pions blancs
     whiteBrush = new QBrush();
@@ -110,34 +114,16 @@ MainWindow::~MainWindow()
 void MainWindow::initialisationPlateau(){
     //Placement des Pions Noir
     //Impaire
-    for(int i_y=1; i_y<4; i_y+=2){
-        for(int i_x=1; i_x<6; i_x++){
-            scene->addEllipse(52*i_x-20,25*i_y-20,15,15,*blackPen,*blackBrush);
+    for(int x=0; x<10; x++){
+        for(int y=0; y<10; y++){
+
+            if(jeu.getDamier(x,y) == 1)
+                scene->addEllipse(25*y+7,25*x+7,14,14,*whitePen,*whiteBrush);
+
+            else if(jeu.getDamier(x,y) == -1)
+                scene->addEllipse(25*y+7,25*x+7,14,14,*blackPen,*blackBrush);
         }
     }
-
-    //Paire
-    for(int i_y=0; i_y<3; i_y+=2){
-        for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+5,25*i_y+32,15,15,*blackPen,*blackBrush);
-        }
-    }
-
-    //Placement des pions Blanc
-    //Impaire
-    for(int i_y=1; i_y<4; i_y+=2){
-        for(int i_x=1; i_x<6; i_x++){
-            scene->addEllipse(52*i_x-20,25*i_y+132,15,15,*whitePen,*whiteBrush);
-        }
-    }
-
-    //Paire
-    for(int i_y=0; i_y<3; i_y+=2){
-        for(int i_x=0; i_x<5; i_x++){
-            scene->addEllipse(52*i_x+5,25*i_y+184,15,15,*whitePen,*whiteBrush);
-        }
-    }
-
 }
 
 //A chaque nouveau déplacement on parcourt le damier
@@ -145,7 +131,7 @@ void MainWindow::initialisationPlateau(){
 void MainWindow::afficherPlateau(){
 
     //Ici, on supprimer tous les éléments du tableau précédent
-    supprimerElement();
+    this->supprimerElement();
 
     //et on place nos pions
     for(int i_x=0; i_x<10; i_x++){
@@ -153,22 +139,22 @@ void MainWindow::afficherPlateau(){
 
             //on place les pions blancs
             if(jeu.getDamier(i_x,i_y) == 1){
-                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*whitePen,*whiteBrush);
+                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*whitePen,*whiteBrush);
             }
 
             //on place les pions noirs
             else if(jeu.getDamier(i_x,i_y) == -1){
-                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*blackPen,*blackBrush);
+                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*blackPen,*blackBrush);
             }
 
             //on place les dames blanches
             else if(jeu.getDamier(i_x,i_y) == 2){
-                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*redPen,*whiteBrush);
+                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*redPen,*whiteBrush);
             }
 
             //on place les dames noirs
             else if(jeu.getDamier(i_x,i_y) == -2){
-                scene->addEllipse(26*i_y+5,25*i_x+5,15,15,*redPen,*blackBrush);
+                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*redPen,*blackBrush);
             }
         }
     }
@@ -187,16 +173,17 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
     x_dest /= 25;
     y_dest /= 25;
 
-    //SAMAMAMAMAMA::::::Modifier 0 et 1 car pas clair
-    if(x_init < 0 && x_init >25 && y_init < 0 && y_init >25
-       && x_dest < 0 && x_dest >25 && y_init < 0 && y_dest >25){
-        if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 0)
-            return true;
+    std::cout << "xinit=" << x_init << "yinit=" << y_init
+              << "xdest=" << x_dest << "ydest=" << y_dest;
 
-        else if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest) == 1)
-            return false;
-   }
-   return false;
+    //si le deplacement est possible
+    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest))
+        return true;
+
+    else
+        return false;
+
+    return false;
 }
 
 /*
@@ -208,14 +195,8 @@ void MainWindow::afficherSurbrillance(int x, int y){
 
 //Supprimer l'ensemble des elements du plateau
 void MainWindow::supprimerElement(){
-    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
-       for (QGraphicsItem *item : qAsConst(selectedItems)) {
-               int count=0;
-               count++;
-               std::cout << count << std::endl;
-               scene->removeItem(item);
-               delete item;
-   }
+    scene->clear();
+    fond = scene->addPixmap(QPixmap(":/Plateau250x250.jpg"));
 }
 
 //Recupérer les coordonnés d'un pion en cliquant dessus
