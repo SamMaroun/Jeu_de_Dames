@@ -12,8 +12,8 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
 {
     //On prend la position du premier clique
     if(pressXinitial == 0 && pressYinitial == 0){
-       pressXinitial = actuel->x();
-       pressYinitial = actuel->y();
+       pressXinitial = actuel->y();
+       pressYinitial = actuel->x();
 
        std::cout << "pressFirst" << std::endl;
 
@@ -23,21 +23,24 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     //On prend la position de la case de destination
     else if(pressXinitial != 0 && pressYinitial != 0
             && pressXsecond == 0 && pressYsecond == 0){
-        pressXsecond = actuel->x();
-        pressYsecond = actuel->y();
+        pressXsecond = actuel->y();
+        pressYsecond = actuel->x();
 
         std::cout << "pressSecond" << std::endl;
+
+        std::cout << "xinit = " << pressXinitial << "yinit = " << pressYinitial
+                     << "xsec = " << pressXsecond << "ysec = " << pressYsecond;
 
         if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond)){
             emit mousePressed();
 
             std::cout << "press" << std::endl;
 
-            pressXinitial=0;
             pressYinitial=0;
+            pressXinitial=0;
 
-            pressXsecond=0;
             pressYsecond=0;
+            pressXsecond=0;
         }
     }
 }
@@ -164,6 +167,9 @@ void MainWindow::afficherPlateau(){
 //deplacement de plateau
 //true, si le traitement à réussi
 bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest){
+
+    std::cout << "debut fonction traitement" << "xinit=" << x_init << "yinit=" << y_init
+              << "xdest=" << x_dest << "ydest=" << y_dest;
 
     //La taille d'une case est de 25px
     //on identifie avec cela les cases considérées
