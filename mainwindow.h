@@ -13,6 +13,8 @@
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QTextEdit>
+#include <QLabel>
 
 #include "Plateau.h"
 
@@ -53,6 +55,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene; //Scène pour placer les objets
     QGraphicsPixmapItem *fond; //Image de fond = damier
+    QLabel *label; //Permet d'afficher a Qui est le tours
 
     //Dessiner les pions Blancs
     QGraphicsEllipseItem *pionBlanc; //pion

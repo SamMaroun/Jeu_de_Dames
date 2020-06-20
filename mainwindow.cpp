@@ -38,6 +38,7 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
              if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
                  emit mousePressed();
                  auTourDesBlancs = false;
+                 ui->label->setText("C'est au tour des Noirs");
                  qDebug() << auTourDesBlancs;
              }
          }
@@ -48,6 +49,7 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
                 if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
                     emit mousePressed();
                     auTourDesBlancs = true;
+                    ui->label->setText("C'est au tour des Blancs");
                     qDebug() << auTourDesBlancs;
                 }
             }
@@ -76,6 +78,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //On nomme notre fenêtre
+    setWindowTitle(tr("Jeu de Dame - Sam et Emile"));
 
     //On initialise la scène
     scene = new QGraphicsScene(this);
@@ -137,6 +142,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //les blancs commencent
     auTourDesBlancs = true;
 
+
 }
 
 MainWindow::~MainWindow()
@@ -194,6 +200,9 @@ void MainWindow::afficherPlateau(){
             }
         }
     }
+/*    if(auTourDesBlancs){
+        texte->print("Blanc");
+    }*/
 }
 
 //On récupère les cliques de la fonction, on les traite avec la methode
