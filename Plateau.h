@@ -14,19 +14,24 @@ class Plateau{
         //Le constructeur place l'ensemble des pions en début de partie
         Plateau();
 
+        //getter
+        int getDamier(int, int) const;
+
         //Déplacement : prend la position du pion
-        bool deplacementPion(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue, int couleur);
+        bool deplacementPion(int, int, int, int, int);
 
         //Déplacement d'une Dame
-        bool deplacementDame(int pos_x, int pos_y,int pos_xvoulue, int pos_yvoulue);
+        bool deplacementDame(int, int, int, int, int);
+
+        //verifie si la case est valide
+        bool caseValide (int, int);
 
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné
         //1 si les blancs gagnent, 2 si les noirs gagnent
         int victoire();
 
-        //getter
-        int getDamier(int x, int y) const;
+
 
     private:
         //Le damier = plateau de pion

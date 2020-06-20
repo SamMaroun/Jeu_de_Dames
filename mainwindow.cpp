@@ -11,24 +11,30 @@
 void MainWindow::mousePressEvent(QMouseEvent *actuel)
 {
     //On prend la position du premier clique
-    if(pressXinitial == 0 && pressYinitial == 0){
+    if(pressXinitial == -1 && pressYinitial == -1){
        pressXinitial = actuel->y();
        pressYinitial = actuel->x();
+
+       qDebug() << "pressInit";
 
        //afficherSurbrillance(pressXinitial,pressYinitial);
     }
 
     //On prend la position de la case de destination
-    else if(pressXinitial != 0 && pressYinitial != 0
-            && pressXsecond == 0 && pressYsecond == 0){
+    else if(pressXinitial != -1 && pressYinitial != -1
+            && pressXsecond == -1 && pressYsecond == -1){
         pressXsecond = actuel->y();
         pressYsecond = actuel->x();
 
+        qDebug() << "pressSecond";
+
         int couleur = jeu.getDamier(pressXinitial/25,pressYinitial/25);
+
+        qDebug() << couleur;
 
         //gestion du tour par tour
         if(auTourDesBlancs){
-         if(couleur == 1){
+         if(couleur == 1 || couleur == 2){
              if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
                  emit mousePressed();
                  auTourDesBlancs = false;
@@ -38,7 +44,7 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
         }
 
         else{
-            if(couleur == -1){
+            if(couleur == -1 || couleur == -2){
                 if(traitement(pressXinitial, pressYinitial, pressXsecond, pressYsecond, couleur)){
                     emit mousePressed();
                     auTourDesBlancs = true;
@@ -47,17 +53,17 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
             }
         }
 
-        pressYinitial=0;
-        pressXinitial=0;
-        pressYsecond=0;
-        pressXsecond=0;
+        pressYinitial=-1;
+        pressXinitial=-1;
+        pressYsecond=-1;
+        pressXsecond=-1;
 
         if(jeu.victoire() != 0){
 
             if(jeu.victoire() == 1)
                 qDebug() << "victoire blanc";
 
-            else
+            else if(jeu.victoire() == 2)
                 qDebug() << "victoire noir";
         }
     }
@@ -120,13 +126,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //on connecte le slot avec l'affichage du plateau
     QObject::connect(this,SIGNAL(mousePressed()), SLOT(afficherPlateau()));
 
-    //On met les cliques sourisà 0
-    pressXinitial=0;
-    pressYinitial=0;
-    pressXsecond=0;
-    pressYsecond=0;
+    //On met les cliques souris à -1
+    //ce qui ne correspond à aucune case du damier
+    pressXinitial=-1;
+    pressYinitial=-1;
+    pressXsecond=-1;
+    pressYsecond=-1;
 
     //gestion du tour par tour
+    //les blancs commencent
     auTourDesBlancs = true;
 
 }
@@ -138,14 +146,16 @@ MainWindow::~MainWindow()
 
 //On initialise l'ensemble du plateau
 void MainWindow::initialisationPlateau(){
-    //Placement des Pions Noir
-    //Impaire
+
+
     for(int x=0; x<10; x++){
         for(int y=0; y<10; y++){
 
+            //PLacement des pions blancs
             if(jeu.getDamier(x,y) == 1)
                 scene->addEllipse(25*y+7,25*x+7,14,14,*whitePen,*whiteBrush);
 
+            //Placement des pions noirs
             else if(jeu.getDamier(x,y) == -1)
                 scene->addEllipse(25*y+7,25*x+7,14,14,*blackPen,*blackBrush);
         }
@@ -191,6 +201,7 @@ void MainWindow::afficherPlateau(){
 //true, si le traitement à réussi
 bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest, int couleur){
 
+
     //La taille d'une case est de 25px
     //on identifie avec cela les cases considérées
     x_init /= 25;
@@ -200,11 +211,25 @@ bool MainWindow::traitement(int x_init, int y_init, int x_dest, int y_dest, int 
     y_dest /= 25;
 
     //si le deplacement est possible
-    if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest, couleur))
-        return true;
+    if(couleur == -1 || couleur == 1){
 
-    else
-        return false;
+        qDebug() << "problème couleur";
+
+        if(jeu.deplacementPion(x_init, y_init, x_dest, y_dest, couleur))
+            return true;
+
+        else
+            return false;
+    }
+
+    else{
+
+        if(jeu.deplacementDame(x_init, y_init, x_dest, y_dest, couleur))
+            return true;
+
+        else
+            return false;
+    }
 
     return false;
 }
@@ -221,8 +246,3 @@ void MainWindow::supprimerElement(){
     scene->clear();
     fond = scene->addPixmap(QPixmap(":/Plateau250x250.jpg"));
 }
-
-//Recupérer les coordonnés d'un pion en cliquant dessus
-//puis cliquer sur une case autorisé pour le déplacer
-//puis le rendre invisible à sa position de départ et visible à l'arrivé
-//tout ça en prenant en compte le fait que d'autres pions sont sur le plateau
