@@ -181,39 +181,8 @@ void MainWindow::miseAJourPlateau(){
     //Ici, on supprimer tous les éléments du tableau précédent
     this->supprimerElement();
 
-<<<<<<< HEAD
     //puis on affiche le plateau
     this->afficherPlateau();
-=======
-    //et on place nos pions
-    for(int i_x=0; i_x<10; i_x++){
-        for(int i_y=0; i_y<10; i_y++){
-
-            //on place les pions blancs
-            if(jeu.getDamier(i_x,i_y) == 1){
-                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*whitePen,*whiteBrush);
-            }
-
-            //on place les pions noirs
-            else if(jeu.getDamier(i_x,i_y) == -1){
-                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*blackPen,*blackBrush);
-            }
-
-            //on place les dames blanches
-            else if(jeu.getDamier(i_x,i_y) == 2){
-                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*redPen,*whiteBrush);
-            }
-
-            //on place les dames noirs
-            else if(jeu.getDamier(i_x,i_y) == -2){
-                scene->addEllipse(25*i_y+7,25*i_x+7,14,14,*redPen,*blackBrush);
-            }
-        }
-    }
-/*    if(auTourDesBlancs){
-        texte->print("Blanc");
-    }*/
->>>>>>> 83bd581e74b04b9defd8cac19f484050942bb426
 }
 
 //On récupère les cliques de la fonction, on les traite avec la methode
