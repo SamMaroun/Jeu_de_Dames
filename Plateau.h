@@ -11,6 +11,7 @@
 
 class Plateau{
     public:
+
         //Le constructeur place l'ensemble des pions en début de partie
         Plateau();
 
@@ -34,8 +35,7 @@ class Plateau{
 
 
     private:
-        //Le damier = plateau de pion
-        int m_damier[10][10];
+        int m_damier[10][10]; //Le damier = plateau de pion
 
 };
 

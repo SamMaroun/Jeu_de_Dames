@@ -7,6 +7,7 @@
 #include "Plateau.h"
 
 Plateau::Plateau(){
+
     //Création d'un plateau de jeu
     int damier[10][10] =
               { { 0,-1, 0,-1, 0,-1, 0,-1, 0,-1},
@@ -21,7 +22,6 @@ Plateau::Plateau(){
                 { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
                 { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
                 { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0} };
-
 
      for(int x=0; x<10; x++){
          for(int y=0; y<10; y++){
@@ -363,14 +363,17 @@ bool Plateau::deplacementDame(int x_init, int y_init,
 
 //true, si la case selectionné est valide
 //les pions se trouvant uniquement sur les cases noirs
+//et dans le damier
 bool Plateau::caseValide (int x, int y){
 
     //cas des lignes paire
-    if(x%2 == 0 && y%2 == 1)
+    if(x%2 == 0 && y%2 == 1
+            && x>=0 && x<10 && y>=0 && y<10)
         return true;
 
     //cas des lignes impaires
-    else if(x%2 == 1 && y%2 == 0)
+    else if(x%2 == 1 && y%2 == 0
+            && x>=0 && x<10 && y>=0 && y<10)
         return true;
 
     return false; //renvoie 0 si la case n'est pas valide

@@ -13,6 +13,8 @@
 #include <QGraphicsPixmapItem>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QTextEdit>
+#include <QLabel>
 
 #include "Plateau.h"
 
@@ -34,25 +36,39 @@ public:
     //Traitement des cliques pour le déplacement
     bool traitement(int, int, int, int, int);
 
-    //Afficher la surbrillance
-    //void afficherSurbrillance(int, int);
+    //Affiche le plateau
+    void afficherPlateau();
+
+    //Afficher la surbrillance quand on clique sur une case
+    void afficherSurbrillance(int, int);
+
+    //Determine la surbrillance pour les dames
+    void surbrillanceDame(int, int, int);
 
     //Supprimer l'ensemble des elements du plateau
     void supprimerElement();
 
+    //Supprimer surbrillance
+    void supprimerSurbrillance();
+
 public slots:
+
+    //gere la recuperation des coordonees et le clique souris
     void mousePressEvent(QMouseEvent *actuel);
 
     //Afficher le plateau a chaque tour
-    void afficherPlateau();
+    void miseAJourPlateau();
 
 signals:
+
+    //signal de clique souris qui emet le slot qui affiche le plateau
     void mousePressed();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene; //Scène pour placer les objets
     QGraphicsPixmapItem *fond; //Image de fond = damier
+    QLabel *label; //Permet d'afficher a Qui est le tours
 
     //Dessiner les pions Blancs
     QGraphicsEllipseItem *pionBlanc; //pion
