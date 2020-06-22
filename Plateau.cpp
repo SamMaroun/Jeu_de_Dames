@@ -61,7 +61,7 @@ bool Plateau::deplacementPion(int x_init, int y_init,
     //un déplacement de base pion blanc sur une case vide
     if(decalageX == 1 && (decalageY == 1 || decalageY == -1)){
 
-        //On verife que la case destination est vide
+        //On verifie que la case destination est vide
         //et que le pion n'est pas noir
         if(m_damier[x_dest][y_dest] == 0 && couleur != -1){
             m_damier[x_dest][y_dest] = couleur;//On place le pion blanc à sa destination
@@ -79,19 +79,24 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             return false;
         }
 
-    //Réalisation d'une prise
+    //Réalisation d'une prise vers le haut
     else if(decalageX == 2){
 
-        //test si pion de la prise est noir et que la destination est vide
-        //et que la cellule est valide
-        //la prise peut s'effectuer
+        //test si pion de la prise est de la couleur ennemie
+        //que la destination est vide
         if((m_damier[x_init-1][y_init-decalageY/2] == couleurOpposant ||
                 m_damier[x_init-1][y_init-decalageY/2] == couleurOpposant-1)
                     && m_damier[x_dest][y_dest] == 0){
 
-            m_damier[x_dest][y_dest] = couleur;//destination le pion est blanc
-            m_damier[x_init][y_init] = 0;//initial plus de pion
-            m_damier[x_init-1][y_init-decalageY/2] = 0; //la prise fonctionne, plus de pion
+            //la prise peut s'effectuer
+            //on met le pion a sa destination
+            m_damier[x_dest][y_dest] = couleur;
+
+            //a l'etat initial il n'y a plus de pion
+            m_damier[x_init][y_init] = 0;
+
+            //on enleve le pion au milieu
+            m_damier[x_init-1][y_init-decalageY/2] = 0;
 
             //transformation en dame blanche, si on est à la fin du plateau
             if(x_dest == 0)
@@ -100,6 +105,7 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             return true;
          }
 
+         //dans le cas contraire, prise impossible
          else
             return false;
         }
@@ -107,7 +113,7 @@ bool Plateau::deplacementPion(int x_init, int y_init,
     //deplacement noir de base sur une case vide
     if(decalageX == -1 && (decalageY == 1 || decalageY == -1)){
 
-        //On verifié que la case destination est vide
+        //On verifie que la case destination est vide
         if(m_damier[x_dest][y_dest] == 0 && couleur != 1){
             m_damier[x_dest][y_dest] = couleur;//On place le pion noir à sa destination
             m_damier[x_init][y_init] = 0;//On le supprime de sa position initiale
@@ -116,7 +122,7 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             if(x_dest == 9)
                 m_damier[x_dest][y_dest] += couleur;
 
-            return true;
+            return true; //le deplacement est possible
          }
 
          //Si elle n'est pas vide, le déplacement est impossible
@@ -124,27 +130,33 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             return false;
         }
 
+     //Réalisation d'une prise vers le bas
      else if(decalageX == -2){
 
-        //test si pion de la prise est blanc, que la destination est vide
-        //et que la cellule est valide
-        //la prise peut s'effectuer
-
+        //test si pion de la prise est de la couleur ennemie
+        //que la destination est vide
         if((m_damier[x_init+1][y_init-decalageY/2] == couleurOpposant ||
                 m_damier[x_init+1][y_init-decalageY/2] == couleurOpposant+1)
                     && m_damier[x_dest][y_dest] == 0){
 
-            m_damier[x_dest][y_dest] = couleur;//destination le pion est blanc
-            m_damier[x_init][y_init] = 0;//initial plus de pion
-            m_damier[x_init+1][y_init-decalageY/2] = 0; //la prise fonctionne, plus de pion
+            //la prise peut s'effectuer
+            //on met le pion a sa destination
+            m_damier[x_dest][y_dest] = couleur;
+
+            //a l'etat initial il n'y a plus de pion
+            m_damier[x_init][y_init] = 0;
+
+            //on enleve le pion au milieu
+            m_damier[x_init+1][y_init-decalageY/2] = 0;
 
             //transformation en dame noir, si on est à la fin du plateau
             if(x_dest == 9)
                 m_damier[x_dest][y_dest] += couleur;
 
-            return true;
+            return true;//le deplacement est possible
          }
 
+         //Si elle n'est pas vide, le déplacement est impossible
          else
             return false;
         }
@@ -152,6 +164,7 @@ bool Plateau::deplacementPion(int x_init, int y_init,
     return false;
 }
 
+//renvoie true si le deplacement est possible
 bool Plateau::deplacementDame(int x_init, int y_init,
                               int x_dest, int y_dest, int couleur){
 
@@ -377,6 +390,59 @@ bool Plateau::caseValide (int x, int y){
         return true;
 
     return false; //renvoie 0 si la case n'est pas valide
+}
+
+//renvoie un tableau contenant les coordonnées des ennemis autour
+std::vector<int> Plateau::ennemiAutour(int x, int y){
+
+    int couleur = m_damier[x][y];
+
+    //couleur de l'adversaire
+    int couleurOpposant = couleur * (-1);
+
+    //on stocke ici les coordonnes des ennemis autour du pion
+    std::vector<int> ennemis = {};
+
+    //on verifie les 4 cases autour d'un pion
+    if(couleur == 1 || couleur == -1){
+
+        //case en bas a droite
+        if(m_damier[x+1][y+1] == couleurOpposant
+                || m_damier[x+1][y+1] == couleurOpposant*2){
+            ennemis.push_back(x+1); ennemis.push_back(y+1);
+        }
+
+        //case en bas a gauche
+        if(m_damier[x+1][y-1] == couleurOpposant
+                || m_damier[x+1][y-1] == couleurOpposant*2){
+            ennemis.push_back(x+1); ennemis.push_back(y-1);
+        }
+
+        //case en haut a droite
+        if(m_damier[x-1][y+1] == couleurOpposant
+                || m_damier[x-1][y+1] == couleurOpposant*2){
+            ennemis.push_back(x-1); ennemis.push_back(y+1);
+        }
+
+        //case en haut a gauche
+        if(m_damier[x-1][y-1] == couleurOpposant
+                || m_damier[x-1][y-1] == couleurOpposant*2){
+            ennemis.push_back(x-1); ennemis.push_back(y-1);
+        }
+    }
+
+    //on verifie l'ensemble des cases accessible par la dame
+    else if(couleur == 2 || couleur == -2){
+
+    }
+
+    return ennemis;
+}
+
+bool Plateau::prisePossible(int x, int y){
+
+    int couleur = m_damier[x][y];
+
 }
 
 

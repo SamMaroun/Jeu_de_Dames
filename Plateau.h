@@ -4,10 +4,12 @@
     DESCRIPTION:Déclaration de la classe Plateau
 */
 
+
+
 #ifndef PLATEAU_H
 #define PLATEAU_H
-#include <iostream>
 
+#include <vector>
 
 class Plateau{
     public:
@@ -27,12 +29,16 @@ class Plateau{
         //verifie si la case est valide
         bool caseValide (int, int);
 
+        //recupère les coordonées des ennemies autour d'un pion
+        std::vector<int> ennemiAutour(int, int, int);
+
+        //verifie si une prise est possible
+        bool prisePossible();
+
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné
         //1 si les blancs gagnent, 2 si les noirs gagnent
         int victoire();
-
-
 
     private:
         int m_damier[10][10]; //Le damier = plateau de pion

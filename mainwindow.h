@@ -15,6 +15,8 @@
 #include <QDebug>
 #include <QTextEdit>
 #include <QLabel>
+#include <QPushButton>
+#include <QFont>
 
 #include "Plateau.h"
 
@@ -30,9 +32,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    //Initialisation début de partie
-    void initialisationPlateau();
-
     //Traitement des cliques pour le déplacement
     bool traitement(int, int, int, int, int);
 
@@ -41,6 +40,9 @@ public:
 
     //Afficher la surbrillance quand on clique sur une case
     void afficherSurbrillance(int, int);
+
+    //Determine la surbrillance pour les pions
+    void surbrillancePion(int,int,int);
 
     //Determine la surbrillance pour les dames
     void surbrillanceDame(int, int, int);
@@ -59,16 +61,25 @@ public slots:
     //Afficher le plateau a chaque tour
     void miseAJourPlateau();
 
+    //Recommence une nouvelle partie
+    void recommencerPartie();
+
 signals:
 
     //signal de clique souris qui emet le slot qui affiche le plateau
     void mousePressed();
+
+    void released();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene; //Scène pour placer les objets
     QGraphicsPixmapItem *fond; //Image de fond = damier
     QLabel *label; //Permet d'afficher a Qui est le tours
+
+    //Button
+    QPushButton *quitter; //bouton pour fermer la fenêtre
+    QPushButton *nouvellePartie; //bouton pour recommencer la partie
 
     //Dessiner les pions Blancs
     QGraphicsEllipseItem *pionBlanc; //pion
