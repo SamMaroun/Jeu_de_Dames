@@ -10,6 +10,7 @@
 Plateau::Plateau(){
 
     //Création d'un plateau de jeu
+
     int damier[10][10] =
               { { 0,-1, 0,-1, 0,-1, 0,-1, 0,-1},
                 {-1, 0,-1, 0,-1, 0,-1, 0,-1, 0},
@@ -104,6 +105,33 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             if(x_dest == 0)
                 m_damier[x_dest][y_dest] += couleur;
 
+            //on appelle la méthode prise possible
+            //nous permettant de savoir si un nouveau deplacement est faisable
+           /*std::vector<int> caseVide = prisePossible(x_dest,y_dest);
+
+           while(caseVide.size() != 0){
+
+               std::cout << "x: " << x_dest << std::endl;
+               std::cout << "y: " << y_dest << std::endl;
+
+               std::cout << caseVide.at(0) << std::endl;
+               std::cout << caseVide.at(1) << std::endl;
+
+                  deplacementPion(x_dest,y_dest,caseVide.at(0), caseVide.at(1),couleur);
+
+                  int rafle_x = caseVide.at(0);
+                  int rafle_y = caseVide.at(1);
+
+                  std::cout << "x: " << rafle_x << std::endl;
+                  std::cout << "y: " << rafle_y << std::endl;
+
+                  caseVide.clear();
+
+                  caseVide = prisePossible(rafle_x,rafle_y);
+
+                  std::cout << "size: " << caseVide.size() << std::endl;
+           }*/
+
             return true;
          }
 
@@ -154,6 +182,34 @@ bool Plateau::deplacementPion(int x_init, int y_init,
             //transformation en dame noir, si on est à la fin du plateau
             if(x_dest == 9)
                 m_damier[x_dest][y_dest] += couleur;
+
+            //on appelle la méthode prise possible
+            //nous permettant de savoir si un nouveau deplacement est faisable
+           /*std::vector<int> caseVide = prisePossible(x_dest,y_dest);
+
+           while(caseVide.size() != 0){
+
+               std::cout << "x: " << x_dest << std::endl;
+               std::cout << "y: " << y_dest << std::endl;
+
+               std::cout << caseVide.at(0) << std::endl;
+               std::cout << caseVide.at(1) << std::endl;
+
+                  deplacementPion(x_dest,y_dest,caseVide.at(0), caseVide.at(1),couleur);
+
+                  int rafle_x = caseVide.at(0);
+                  int rafle_y = caseVide.at(1);
+
+                  std::cout << "x: " << rafle_x << std::endl;
+                  std::cout << "y: " << rafle_y << std::endl;
+
+                  caseVide.clear();
+
+                  caseVide = prisePossible(rafle_x,rafle_y);
+
+                  std::cout << "yo: " << caseVide.size() << std::endl;
+           }*/
+
 
             return true;//le deplacement est possible
          }
@@ -459,6 +515,10 @@ std::vector<int> Plateau::prisePossible(int x, int y){
     //on recupère le tableau d'ennemi autour
     std::vector<int> ennemis = ennemiAutour(x,y);
 
+    for(unsigned int i=0; i<ennemis.size(); i++){
+        std::cout << ennemis.at(i) << std::endl;
+    }
+
     //coordonnées des cases vides validant une possible prise
     std::vector<int> vides = {};
 
@@ -472,28 +532,34 @@ std::vector<int> Plateau::prisePossible(int x, int y){
         //si une prise est possible lors du deplacement
         //on renvoie true
         if(m_damier[ennemis.at(i)+1][ennemis.at(i+1)+1] == 0
+                && m_damier[x][y] == m_damier[ennemis.at(i)+2][ennemis.at(i+1)+2]
                 && caseValide(ennemis.at(i)+1,ennemis.at(i+1)+1)){
 
             vides.push_back(ennemis.at(i)+1); vides.push_back(ennemis.at(i+1)+1);
         }
 
         if(m_damier[ennemis.at(i)+1][ennemis.at(i+1)-1] == 0
+                && m_damier[x][y] == m_damier[ennemis.at(i)+2][ennemis.at(i+1)-2]
                 && caseValide(ennemis.at(i)+1,ennemis.at(i+1)-1)){
 
             vides.push_back(ennemis.at(i)+1); vides.push_back(ennemis.at(i+1)-1);
         }
 
         if(m_damier[ennemis.at(i)-1][ennemis.at(i+1)-1] == 0
+                && m_damier[x][y] == m_damier[ennemis.at(i)-2][ennemis.at(i+1)-2]
                 && caseValide(ennemis.at(i)-1,ennemis.at(i+1)-1)){
 
            vides.push_back(ennemis.at(i)-1); vides.push_back(ennemis.at(i+1)-1);
         }
 
         if(m_damier[ennemis.at(i)-1][ennemis.at(i+1)+1] == 0
+                && m_damier[x][y] == m_damier[ennemis.at(i)-2][ennemis.at(i+1)+2]
                 && caseValide(ennemis.at(i)-1,ennemis.at(i+1)+1)){
 
             vides.push_back(ennemis.at(i)-1); vides.push_back(ennemis.at(i+1)+1);
         }
+
+
 
     }
 

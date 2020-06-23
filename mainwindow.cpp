@@ -121,14 +121,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //on connecte le signal released du bouton au slot recommencer
     QObject::connect(nouvellePartie, SIGNAL(released()), this, SLOT(recommencerPartie()));
 
-    //Initialisation du bouton d'instructions
-    instructions = new QPushButton("Instructions", this);
-    instructions->setGeometry(200,290,100,25);
-    checked = false;
-    instructions->setChecked(checked);
-
-    QObject::connect(instructions,SIGNAL(toggled(checked)),this,SLOT(afficherRegle(checked)));
-
     //Initialisation des pions blancs
     whiteBrush = new QBrush();
     whitePen = new QPen();
@@ -175,9 +167,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QLabel *labelImageB=new QLabel;
 
     QLabel *labelImageN=new QLabel;
-
-
-
 
 }
 
