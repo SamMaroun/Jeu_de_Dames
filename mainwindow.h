@@ -67,12 +67,17 @@ public slots:
     //Recommence une nouvelle partie
     void recommencerPartie();
 
+    //Afficher les règles du jeu
+    void afficherRegle(bool);
+
 signals:
 
     //signal de clique souris qui emet le slot qui affiche le plateau
     void mousePressed();
 
     void released();
+
+    void toggled(bool);
 
 private:
     Ui::MainWindow *ui;
@@ -83,7 +88,8 @@ private:
     //Button
     QPushButton *quitter; //bouton pour fermer la fenêtre
     QPushButton *nouvellePartie; //bouton pour recommencer la partie
-    QToolButton *instructions; //bouton qui affiche les règles du jeu
+    QPushButton *instructions; //bouton qui affiche les règles du jeu
+    bool checked;
 
     //Dessiner les pions Blancs
     QGraphicsEllipseItem *pionBlanc; //pion
