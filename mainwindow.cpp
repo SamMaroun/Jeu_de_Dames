@@ -502,6 +502,7 @@ void MainWindow::recommencerPartie(){
     //et on initialise le plateau console
     Plateau initial;
     jeu = initial;
+    ui->labelImageB->setPixmap(QPixmap(""));
 
     //on initialise l'affichage du plateau
     this->afficherPlateau();
