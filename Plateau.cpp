@@ -25,6 +25,20 @@ Plateau::Plateau(){
                 { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
                 { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0} };
 
+    /*int damier[10][10] =
+              { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},,
+                {1, 0,-1, 0,-1, 0,-1, 0,-1, 0},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0,0, 0,0, 0,0, 0,0, 0},
+
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, -1},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 1, 0, 1, 0, 1, 0, 1, 0, -1},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, };*/
+
      for(int x=0; x<10; x++){
          for(int y=0; y<10; y++){
              m_damier[x][y]= damier[x][y];
@@ -453,8 +467,6 @@ bool Plateau::caseValide (int x, int y){
 //renvoie un tableau contenant les coordonnées des ennemis autour
 std::vector<int> Plateau::ennemiAutour(int x, int y){
 
-    std::cout << "debut ennemi autour" << std::endl;
-
     int couleur = m_damier[x][y];
 
     //couleur de l'adversaire
@@ -506,18 +518,8 @@ std::vector<int> Plateau::ennemiAutour(int x, int y){
 //renvoie les coordonnées de destination où la prise est possible
 std::vector<int> Plateau::prisePossible(int x, int y){
 
-    std::cout << "debut prise possible" << std::endl;
-
-    int couleur = m_damier[x][y];
-
-    std::cout << couleur;
-
     //on recupère le tableau d'ennemi autour
     std::vector<int> ennemis = ennemiAutour(x,y);
-
-    for(unsigned int i=0; i<ennemis.size(); i++){
-        std::cout << ennemis.at(i) << std::endl;
-    }
 
     //coordonnées des cases vides validant une possible prise
     std::vector<int> vides = {};
@@ -559,30 +561,10 @@ std::vector<int> Plateau::prisePossible(int x, int y){
             vides.push_back(ennemis.at(i)-1); vides.push_back(ennemis.at(i+1)+1);
         }
 
-
-
     }
 
     return vides;
 }
-
-//compte nombre de pion sur le damier
-int Plateau::compterPion(){
-
-    int nombrePion = 0;
-
-    for(int x=0; x<10; x++){
-        for(int y=0; y<10; y++){
-
-            if(m_damier[x][y] != 0)
-                nombrePion++;
-
-        }
-    }
-
-    return nombrePion;
-}
-
 
 //victoire si l'opposant n'a plus de pion à jouer
 int Plateau::victoire(){

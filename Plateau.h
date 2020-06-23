@@ -35,8 +35,6 @@ class Plateau{
         //verifie si une prise est possible
         std::vector<int> prisePossible(int, int);
 
-        //donne le nombre de pion en jeu
-        int compterPion();
 
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné

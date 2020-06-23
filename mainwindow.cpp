@@ -491,6 +491,8 @@ void MainWindow::recommencerPartie(){
     //et on initialise le plateau console
     Plateau initial;
     jeu = initial;
+
+    //on enlève l'image de victoire
     ui->labelImageB->setPixmap(QPixmap(""));
 
     //on initialise l'affichage du plateau
@@ -502,19 +504,6 @@ void MainWindow::recommencerPartie(){
     //on affiche que c'est à leur tour
     ui->label->setText("<font color=\"#C1C1C1\">C'est au tour des Blancs</font>");
 
-    emit released();//
+    emit released();
 
-}
-
-//afficher instruction de jeu
-void MainWindow::afficherRegle(bool checked){
-
-    if(checked){
-        scene->clear();
-
-    }
-
-    else{
-        afficherPlateau();
-    }
 }
