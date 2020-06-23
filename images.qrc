@@ -1,3 +1,6 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>blancVictory.png</file>
+        <file>noirVictory.png</file>
+    </qresource>
 </RCC>

@@ -33,6 +33,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Jeu_de_Dames.qrc
+    Jeu_de_Dames.qrc \
+    images.qrc
 
-DISTFILES +=
+DISTFILES += \
+    blancVictory.png \
+    noirVictory.png

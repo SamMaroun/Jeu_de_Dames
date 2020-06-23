@@ -82,11 +82,12 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
         //on teste la condition de victoire à chaque tour
         if(jeu.victoire() != 0){
 
-            if(jeu.victoire() == 1)
-                qDebug() << "victoire blanc";
-
-            else if(jeu.victoire() == 2)
-                qDebug() << "victoire noir";
+            if(jeu.victoire() == 1){
+                ui->labelImageB->setPixmap(QPixmap(":/blancVictory.png"));
+            }
+            else if(jeu.victoire() == 2){
+                ui->labelImageB->setPixmap(QPixmap(":/noirVictory.png"));
+            }
         }
     }
 }
@@ -169,6 +170,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //gestion du tour par tour
     auTourDesBlancs = true; //les blancs commencent
+
+    //Création des variables pour images de victoire
+    QLabel *labelImageB=new QLabel;
+
+    QLabel *labelImageN=new QLabel;
+
+
+
+
 }
 
 MainWindow::~MainWindow()

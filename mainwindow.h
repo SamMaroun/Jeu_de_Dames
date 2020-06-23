@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QFont>
+#include <QImage>
 
 #include "Plateau.h"
 
@@ -108,6 +109,10 @@ private:
     QGraphicsRectItem *surbrillance;
     QBrush *yellowBrush;
     QPen *yellowPen;
+
+    //Image de victoire
+    QLabel *labelImageB;
+    QLabel *labelImageN;
 
     //gestion clique de souris
     int pressXinitial;
