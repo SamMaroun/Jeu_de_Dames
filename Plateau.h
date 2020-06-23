@@ -30,10 +30,13 @@ class Plateau{
         bool caseValide (int, int);
 
         //recupère les coordonées des ennemies autour d'un pion
-        std::vector<int> ennemiAutour(int, int, int);
+        std::vector<int> ennemiAutour(int, int);
 
         //verifie si une prise est possible
-        bool prisePossible();
+        std::vector<int> prisePossible(int, int);
+
+        //donne le nombre de pion en jeu
+        int compterPion();
 
         //Test la fin de jeu
         //valeur par défaut 0, si personne n'a encore gagné

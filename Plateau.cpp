@@ -5,6 +5,7 @@
 */
 
 #include "Plateau.h"
+#include <iostream>
 
 Plateau::Plateau(){
 
@@ -36,7 +37,8 @@ int Plateau::getDamier(int x,int y) const{
 
 //true si le déplacement est bien effectué
 bool Plateau::deplacementPion(int x_init, int y_init,
-                              int x_dest, int y_dest, int couleur){
+                              int x_dest, int y_dest,
+                              int couleur){
 
     //Si une dame est selectionnée, ce n'est pas un pion
     //donc c'est l'autre méthode qui agira
@@ -395,6 +397,8 @@ bool Plateau::caseValide (int x, int y){
 //renvoie un tableau contenant les coordonnées des ennemis autour
 std::vector<int> Plateau::ennemiAutour(int x, int y){
 
+    std::cout << "debut ennemi autour" << std::endl;
+
     int couleur = m_damier[x][y];
 
     //couleur de l'adversaire
@@ -407,26 +411,30 @@ std::vector<int> Plateau::ennemiAutour(int x, int y){
     if(couleur == 1 || couleur == -1){
 
         //case en bas a droite
-        if(m_damier[x+1][y+1] == couleurOpposant
-                || m_damier[x+1][y+1] == couleurOpposant*2){
+        if( (m_damier[x+1][y+1] == couleurOpposant
+                || m_damier[x+1][y+1] == couleurOpposant*2)
+                    && caseValide(x+1,y+1)){
             ennemis.push_back(x+1); ennemis.push_back(y+1);
         }
 
         //case en bas a gauche
-        if(m_damier[x+1][y-1] == couleurOpposant
-                || m_damier[x+1][y-1] == couleurOpposant*2){
+        if( (m_damier[x+1][y-1] == couleurOpposant
+                || m_damier[x+1][y-1] == couleurOpposant*2)
+                    && caseValide(x+1,y-1)){
             ennemis.push_back(x+1); ennemis.push_back(y-1);
         }
 
         //case en haut a droite
-        if(m_damier[x-1][y+1] == couleurOpposant
-                || m_damier[x-1][y+1] == couleurOpposant*2){
+        if( (m_damier[x-1][y+1] == couleurOpposant
+                || m_damier[x-1][y+1] == couleurOpposant*2)
+                    && caseValide(x-1,y+1)){
             ennemis.push_back(x-1); ennemis.push_back(y+1);
         }
 
         //case en haut a gauche
-        if(m_damier[x-1][y-1] == couleurOpposant
-                || m_damier[x-1][y-1] == couleurOpposant*2){
+        if( (m_damier[x-1][y-1] == couleurOpposant
+                || m_damier[x-1][y-1] == couleurOpposant*2)
+                    && caseValide(x-1,y-1)){
             ennemis.push_back(x-1); ennemis.push_back(y-1);
         }
     }
@@ -439,12 +447,75 @@ std::vector<int> Plateau::ennemiAutour(int x, int y){
     return ennemis;
 }
 
-bool Plateau::prisePossible(int x, int y){
+//renvoie les coordonnées de destination où la prise est possible
+std::vector<int> Plateau::prisePossible(int x, int y){
+
+    std::cout << "debut prise possible" << std::endl;
 
     int couleur = m_damier[x][y];
 
+    std::cout << couleur;
+
+    //on recupère le tableau d'ennemi autour
+    std::vector<int> ennemis = ennemiAutour(x,y);
+
+    //coordonnées des cases vides validant une possible prise
+    std::vector<int> vides = {};
+
+
+    //et on réalise un test pour savoir
+    //si un deplacement entrainant une prise est possible
+    for(unsigned int i=0; i<ennemis.size(); i+=2){
+
+        //il faut au moins qu'une des conditions soit respecté pour pouvoir
+        //effectué une prise
+        //si une prise est possible lors du deplacement
+        //on renvoie true
+        if(m_damier[ennemis.at(i)+1][ennemis.at(i+1)+1] == 0
+                && caseValide(ennemis.at(i)+1,ennemis.at(i+1)+1)){
+
+            vides.push_back(ennemis.at(i)+1); vides.push_back(ennemis.at(i+1)+1);
+        }
+
+        if(m_damier[ennemis.at(i)+1][ennemis.at(i+1)-1] == 0
+                && caseValide(ennemis.at(i)+1,ennemis.at(i+1)-1)){
+
+            vides.push_back(ennemis.at(i)+1); vides.push_back(ennemis.at(i+1)-1);
+        }
+
+        if(m_damier[ennemis.at(i)-1][ennemis.at(i+1)-1] == 0
+                && caseValide(ennemis.at(i)-1,ennemis.at(i+1)-1)){
+
+           vides.push_back(ennemis.at(i)-1); vides.push_back(ennemis.at(i+1)-1);
+        }
+
+        if(m_damier[ennemis.at(i)-1][ennemis.at(i+1)+1] == 0
+                && caseValide(ennemis.at(i)-1,ennemis.at(i+1)+1)){
+
+            vides.push_back(ennemis.at(i)-1); vides.push_back(ennemis.at(i+1)+1);
+        }
+
+    }
+
+    return vides;
 }
 
+//compte nombre de pion sur le damier
+int Plateau::compterPion(){
+
+    int nombrePion = 0;
+
+    for(int x=0; x<10; x++){
+        for(int y=0; y<10; y++){
+
+            if(m_damier[x][y] != 0)
+                nombrePion++;
+
+        }
+    }
+
+    return nombrePion;
+}
 
 
 //victoire si l'opposant n'a plus de pion à jouer

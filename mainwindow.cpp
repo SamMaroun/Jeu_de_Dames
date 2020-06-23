@@ -91,6 +91,7 @@ void MainWindow::mousePressEvent(QMouseEvent *actuel)
     }
 }
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -118,6 +119,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //on connecte le signal released du bouton au slot recommencer
     QObject::connect(nouvellePartie, SIGNAL(released()), this, SLOT(recommencerPartie()));
+
+    //Initialisation du bouton d'instructions
+    //instructions = new QPushButton("Instructions", this);
+    //instructions->setGeometry(200,290,100,25);
 
     //Initialisation des pions blancs
     whiteBrush = new QBrush();
@@ -159,8 +164,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(this,SIGNAL(mousePressed()), SLOT(miseAJourPlateau()));
 
     //gestion du tour par tour
-    //les blancs commencent
-    auTourDesBlancs = true;
+    auTourDesBlancs = true; //les blancs commencent
 }
 
 MainWindow::~MainWindow()
@@ -289,34 +293,10 @@ void MainWindow::surbrillancePion(int x,int y,int couleur){
     //couleur de l'ennemi
     int couleurOpposant = couleur * (-1);
 
-    //on gère les deplacements simples en fonction de la couleur
-    //pion blanc
-    if(couleur == 1){
+    bool deplacementSimple = true;
 
-        //deplacement simple vers la gauche
-        if(jeu.getDamier(x-1,y-1) == 0 && jeu.caseValide(x-1,y-1)){
-            scene->addRect(25*(y-1)+7,25*(x-1)+7,14,14,*yellowPen, *yellowBrush);
-        }
-
-        //deplacement simple vers la droite
-        if(jeu.getDamier(x-1,y+1) == 0 && jeu.caseValide(x-1,y+1)){
-            scene->addRect(25*(y+1)+7,25*(x-1)+7,14,14,*yellowPen,*yellowBrush);
-        }
-    }
-
-    //pion noir
-    else if(couleur == -1){
-
-        //deplacement simple vers la gauche
-        if(jeu.getDamier(x+1,y-1) == 0 && jeu.caseValide(x+1,y-1)){
-            scene->addRect(25*(y-1)+7,25*(x+1)+7,14,14,*yellowPen,*yellowBrush);
-        }
-
-        //deplacement simple vers la droite
-        if(jeu.getDamier(x+1,y+1) == 0 && jeu.caseValide(x+1,y+1)){
-            scene->addRect(25*(y+1)+7,25*(x+1)+7,14,14,*yellowPen,*yellowBrush);
-        }
-    }
+    //Soit on peut se deplacer avec prise, et dans ce cas il n'y a
+    //pas de deplacement simple
 
     //deplacement avec prise on gère ensuite tous les deplacements avec prise
     //possible quelque soit la couleur du pion
@@ -326,6 +306,7 @@ void MainWindow::surbrillancePion(int x,int y,int couleur){
                 && jeu.getDamier(x-2,y-2) == 0
                     && jeu.caseValide(x-2,y-2)){
         scene->addRect(25*(y-2)+7,25*(x-2)+7,14,14,*yellowPen,*yellowBrush);
+        deplacementSimple = false;
     }
 
     //deplacement avec prise vers la gauche en bas
@@ -334,6 +315,7 @@ void MainWindow::surbrillancePion(int x,int y,int couleur){
                 && jeu.getDamier(x+2,y-2) == 0
                     && jeu.caseValide(x+2,y-2)){
         scene->addRect(25*(y-2)+7,25*(x+2)+7,14,14,*yellowPen,*yellowBrush);
+        deplacementSimple = false;
     }
 
     //deplacement avec prise vers la gauche bas
@@ -342,6 +324,7 @@ void MainWindow::surbrillancePion(int x,int y,int couleur){
                 && jeu.getDamier(x-2,y+2) == 0
                     && jeu.caseValide(x-2,y+2)){
         scene->addRect(25*(y+2)+7,25*(x-2)+7,14,14,*yellowPen,*yellowBrush);
+        deplacementSimple = false;
     }
 
     //deplacement avec prise vers la droite bas
@@ -350,7 +333,42 @@ void MainWindow::surbrillancePion(int x,int y,int couleur){
                 && jeu.getDamier(x+2,y+2) == 0
                     && jeu.caseValide(x+2,y+2)){
         scene->addRect(25*(y+2)+7,25*(x+2)+7,14,14,*yellowPen,*yellowBrush);
+        deplacementSimple = false;
     }
+
+    if(deplacementSimple){
+
+        //on gère les deplacements simples en fonction de la couleur
+        //pion blanc
+        if(couleur == 1){
+
+            //deplacement simple vers la gauche
+            if(jeu.getDamier(x-1,y-1) == 0 && jeu.caseValide(x-1,y-1)){
+                scene->addRect(25*(y-1)+7,25*(x-1)+7,14,14,*yellowPen, *yellowBrush);
+            }
+
+            //deplacement simple vers la droite
+            if(jeu.getDamier(x-1,y+1) == 0 && jeu.caseValide(x-1,y+1)){
+                scene->addRect(25*(y+1)+7,25*(x-1)+7,14,14,*yellowPen,*yellowBrush);
+            }
+        }
+
+        //pion noir
+        else if(couleur == -1){
+
+            //deplacement simple vers la gauche
+            if(jeu.getDamier(x+1,y-1) == 0 && jeu.caseValide(x+1,y-1)){
+                scene->addRect(25*(y-1)+7,25*(x+1)+7,14,14,*yellowPen,*yellowBrush);
+            }
+
+            //deplacement simple vers la droite
+            if(jeu.getDamier(x+1,y+1) == 0 && jeu.caseValide(x+1,y+1)){
+                scene->addRect(25*(y+1)+7,25*(x+1)+7,14,14,*yellowPen,*yellowBrush);
+            }
+        }
+
+    }
+
 }
 
 //determination de la surbrillance pour une dame

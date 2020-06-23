@@ -32,6 +32,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    //gère le second clique de souris effectué dans la fenetre
+    void cliqueDestination(int,int,int,int);
+
     //Traitement des cliques pour le déplacement
     bool traitement(int, int, int, int, int);
 
@@ -80,6 +83,7 @@ private:
     //Button
     QPushButton *quitter; //bouton pour fermer la fenêtre
     QPushButton *nouvellePartie; //bouton pour recommencer la partie
+    QToolButton *instructions; //bouton qui affiche les règles du jeu
 
     //Dessiner les pions Blancs
     QGraphicsEllipseItem *pionBlanc; //pion
@@ -106,7 +110,7 @@ private:
     int pressYsecond;
 
     //gestion du tour par tour
-    bool auTourDesBlancs;
+    bool auTourDesBlancs; //true si c'est au tour des blancs
 
     //Instanciation d'un plateau
     Plateau jeu;
